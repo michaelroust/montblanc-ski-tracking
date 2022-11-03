@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "montblanc-ski-tracking"
+rootProject.name = "Montblanc Ski Tracking"
 include ':app'
