@@ -18,6 +18,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.core.app.ActivityCompat
 import com.github.michaelroust.montblanc_ski_tracking.presentation.theme.MontblancSkiTrackingTheme
 import com.github.michaelroust.montblanc_ski_tracking.presentation.utilities.Globals.LOG_TAG
@@ -174,22 +176,19 @@ class StatsActivity : ComponentActivity() {
     // UI
 
     private fun Double.format(decimals: Int) = "%.${decimals}f".format(this)
-
+    @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
     @Composable
     fun StatsApp() {
         MontblancSkiTrackingTheme {
             CustomColumn {
-                CustomText(text = "StatsActivity")
-
                 val hours = activeTime.value.toInt() / 3600
                 val minutes = (activeTime.value.toInt() % 3600) / 60
                 val seconds = (activeTime.value.toInt()) % 60
 
                 CustomStatsText(text = "Active time: ${String.format("%02d:%02d:%02d", hours, minutes, seconds)}")
                 CustomStatsText(text = "Nº runs: ${nRuns.value}")
-                CustomStatsText(text = "Distance skied: ${distTraveled.value.format(1)} m")
+                CustomStatsText(text = "Distance: ${distTraveled.value.format(1)} m")
                 CustomStatsText(text = "Elevation: ${deltaElevDown.value.format(1)} m")
-                CustomStatsText(text = "Current speed: ${curSpeed.value.format(1)} km/h")
                 CustomStatsText(text = "Average speed: ${avgSkiingSpeed.value.format(1)} km/h")
                 CustomStatsText(text = "Top speed: ${topSpeed.value.format(1)} km/h")
 
