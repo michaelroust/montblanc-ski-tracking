@@ -53,6 +53,30 @@ fun CustomStatsText(text: String) {
 }
 
 @Composable
+fun CustomStatsTopBottomText(text: String) {
+    Text(
+        modifier = Modifier.fillMaxWidth(),
+        textAlign = TextAlign.Center,
+        color = Color(0xFFDDDDDD),
+        fontWeight = FontWeight.Bold,
+        fontSize = 14.sp,
+        text = text
+    )
+}
+
+@Composable
+fun CustomStatsMiddleText(text: String) {
+    Text(
+        modifier = Modifier.fillMaxWidth(),
+        textAlign = TextAlign.Center,
+        color = MaterialTheme.colors.primary,
+        fontWeight = FontWeight.Bold,
+        fontSize = 18.sp,
+        text = text
+    )
+}
+
+@Composable
 fun CustomInfoText(text: String) {
     Text(
         modifier = Modifier.fillMaxWidth(),

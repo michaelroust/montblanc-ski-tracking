@@ -181,9 +181,7 @@ class StatsActivity : ComponentActivity() {
     fun OneLapStats() {
         MontblancSkiTrackingTheme {
             CustomColumn {
-                val hours = activeTime.value.toInt() / 3600
-                val minutes = (activeTime.value.toInt() % 3600) / 60
-                val seconds = (activeTime.value.toInt()) % 60
+
                 //ADD CURRENT WATCH TIME
                 CustomStatsText(text = "Distance: ${distTraveled.value.format(1)} m")
                 CustomStatsText(text = "Elevation: ${deltaElevDown.value.format(1)} m")
@@ -219,11 +217,14 @@ class StatsActivity : ComponentActivity() {
                 val minutes = (activeTime.value.toInt() % 3600) / 60
                 val seconds = (activeTime.value.toInt()) % 60
 
-                CustomStatsText(text = "Distance: ${distTraveled.value.format(1)} m")
-                CustomStatsText(text = "Elevation: ${deltaElevDown.value.format(1)} m")
-                CustomStatsText(text = "Average speed: ${avgSkiingSpeed.value.format(1)} km/h")
-                CustomStatsText(text = "Top speed: ${topSpeed.value.format(1)} km/h")
-                CustomStatsText(text = "Active time: ${String.format("%02dº:%02d'':%02d'", hours, minutes, seconds)}")
+                CustomStatsText(text = "${String.format("%02dº:%02d'':%02d'", hours, minutes, seconds)}")
+                CustomStatsTopBottomText(text = "${distTraveled.value.format(1)} m")
+                CustomStatsMiddleText(text = "${avgSkiingSpeed.value.format(1)}")
+                CustomInfoText(text = "AVG km/h")
+                CustomStatsMiddleText(text = "${topSpeed.value.format(1)}")
+                CustomInfoText(text = "TOP km/h")
+                CustomStatsTopBottomText(text = "${deltaElevDown.value.format(1)} m")
+
 
             }
         }
@@ -237,7 +238,11 @@ class StatsActivity : ComponentActivity() {
                 CustomCompactChip("Stop skiing") {
                     toggleSkiing()
                 }
+                CustomCompactChip("Pause skiing") {
+                    //TODO
+                }
             }
+
         }
     }
 
