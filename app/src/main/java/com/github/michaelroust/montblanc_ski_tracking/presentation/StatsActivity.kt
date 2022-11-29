@@ -16,6 +16,9 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.tooling.preview.Preview
@@ -179,14 +182,18 @@ class StatsActivity : ComponentActivity() {
     @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
     @Composable
     fun OneLapStats() {
+        //TimeText()
         MontblancSkiTrackingTheme {
+
             CustomColumn {
 
-                //ADD CURRENT WATCH TIME
-                CustomStatsText(text = "Distance: ${distTraveled.value.format(1)} m")
-                CustomStatsText(text = "Elevation: ${deltaElevDown.value.format(1)} m")
-                CustomStatsText(text = "Average speed: ${avgSkiingSpeed.value.format(1)} km/h")
-                CustomStatsText(text = "Top speed: ${topSpeed.value.format(1)} km/h")
+
+                CustomStatsTopBottomText(text = "${distTraveled.value.format(1)} m")
+                CustomStatsMiddleText(text = "${avgSkiingSpeed.value.format(1)}")
+                CustomInfoText(text = "AVG km/h")
+                CustomStatsMiddleText(text = "${topSpeed.value.format(1)}")
+                CustomInfoText(text = "TOP km/h")
+                CustomStatsTopBottomText(text = "${deltaElevDown.value.format(1)} m")
 
                 val startStopText = if (!isSkiing.value) "Start" else "Stop"
                 CustomCompactChip(text = "$startStopText skiing") {
@@ -211,6 +218,25 @@ class StatsActivity : ComponentActivity() {
     @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
     @Composable
     fun AllLapsStats() {
+//        val hours = activeTime.value.toInt() / 3600
+//        val minutes = (activeTime.value.toInt() % 3600) / 60
+//        val seconds = (activeTime.value.toInt()) % 60
+//
+//        var textBeforeTime by rememberSaveable { mutableStateOf("${String.format("%02dº:%02d'':%02d'", hours, minutes, seconds)}")
+//        TimeText(
+//            leadingCurvedContent = {
+//                BasicCurvedText(
+//                    text = textBeforeTime,
+//                    style = TimeTextDefaults.timeCurvedTextStyle()
+//                )
+//            }
+//            leadingLinearContent = {
+//                Text(
+//                    text = textBeforeTime,
+//                    style = TimeTextDefaults.timeTextStyle()
+//                )
+//            }
+//        )
         MontblancSkiTrackingTheme {
             CustomColumn {
                 val hours = activeTime.value.toInt() / 3600
@@ -219,10 +245,14 @@ class StatsActivity : ComponentActivity() {
 
                 CustomStatsText(text = "${String.format("%02dº:%02d'':%02d'", hours, minutes, seconds)}")
                 CustomStatsTopBottomText(text = "${distTraveled.value.format(1)} m")
-                CustomStatsMiddleText(text = "${avgSkiingSpeed.value.format(1)}")
-                CustomInfoText(text = "AVG km/h")
                 CustomStatsMiddleText(text = "${topSpeed.value.format(1)}")
                 CustomInfoText(text = "TOP km/h")
+                CustomStatsMiddleText(text = "${avgSkiingSpeed.value.format(1)}")
+                CustomInfoText(text = "AVG km/h")
+
+
+
+
                 CustomStatsTopBottomText(text = "${deltaElevDown.value.format(1)} m")
 
 
