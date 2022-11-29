@@ -16,10 +16,10 @@ val OrangeMontblanc = Color(0xFFE8B003)
 val RedMontblanc = Color(0xFFA80D16)
 
 // Colors variants from the ones that are used in the Montblanc fitness app
-val GreenVariantMontblanc = Color(0xFFA2CFA4)
-val BlueVariantMontblanc = Color(0xFF38B2C3)
-val OrangeVariantMontblanc = Color(0xFFE8B073)
-val RedVariantMontblanc = Color(0xFFA85A10)
+val GreenVariantMontblanc = Color(0xFFA2CFA5)
+val BlueVariantMontblanc = Color(0xFF38B2C4)
+val OrangeVariantMontblanc = Color(0xFFE8B074)
+val RedVariantMontblanc = Color(0xFFA85A11)
 
 internal val wearColorPalette: Colors = Colors(
     primary = OrangeMontblanc,
