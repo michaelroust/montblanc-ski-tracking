@@ -1,5 +1,6 @@
 package com.github.michaelroust.montblanc_ski_tracking.presentation
 
+import android.graphics.fonts.FontStyle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -7,6 +8,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontStyle.Companion.Italic
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,6 +51,31 @@ fun CustomStatsText(text: String) {
         text = text
     )
 }
+
+@Composable
+fun CustomInfoText(text: String) {
+    Text(
+        modifier = Modifier.fillMaxWidth(),
+        textAlign = TextAlign.Center,
+        color = Color(0xFFDDDDDD),
+        fontSize = 11.sp,
+        fontWeight = FontWeight.Bold,
+        text = text
+    )
+}
+
+@Composable
+fun CustomLapsText(text: String) {
+    Text(
+        modifier = Modifier.fillMaxWidth(),
+        textAlign = TextAlign.Center,
+        color = MaterialTheme.colors.primary,
+        fontSize = 24.sp,
+        fontWeight = FontWeight.ExtraBold,
+        text = text
+    )
+}
+
 
 @Composable
 fun CustomChip(text: String, onClick: () -> Unit) {

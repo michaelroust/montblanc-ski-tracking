@@ -203,7 +203,8 @@ class StatsActivity : ComponentActivity() {
     fun TransitionAllLapsStats() {
         MontblancSkiTrackingTheme {
             CustomColumn {
-                CustomStatsText(text = "Nº runs: ${nRuns.value}")
+                CustomInfoText(text = "Statistics over all")
+                CustomLapsText(text = "${nRuns.value} laps")
             }
         }
     }
