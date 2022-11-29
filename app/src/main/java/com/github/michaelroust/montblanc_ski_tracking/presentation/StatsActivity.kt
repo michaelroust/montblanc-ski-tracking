@@ -52,7 +52,7 @@ class StatsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            StatsApp()
+            OneLapStats()
         }
 
         //-----------------------------------------------------------------------------------
@@ -178,15 +178,13 @@ class StatsActivity : ComponentActivity() {
     private fun Double.format(decimals: Int) = "%.${decimals}f".format(this)
     @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
     @Composable
-    fun StatsApp() {
+    fun OneLapStats() {
         MontblancSkiTrackingTheme {
             CustomColumn {
                 val hours = activeTime.value.toInt() / 3600
                 val minutes = (activeTime.value.toInt() % 3600) / 60
                 val seconds = (activeTime.value.toInt()) % 60
-
-                CustomStatsText(text = "Active time: ${String.format("%02d:%02d:%02d", hours, minutes, seconds)}")
-                CustomStatsText(text = "Nº runs: ${nRuns.value}")
+                //ADD CURRENT WATCH TIME
                 CustomStatsText(text = "Distance: ${distTraveled.value.format(1)} m")
                 CustomStatsText(text = "Elevation: ${deltaElevDown.value.format(1)} m")
                 CustomStatsText(text = "Average speed: ${avgSkiingSpeed.value.format(1)} km/h")
@@ -199,6 +197,74 @@ class StatsActivity : ComponentActivity() {
             }
         }
     }
+
+    @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
+    @Composable
+    fun TransitionAllLapsStats() {
+        MontblancSkiTrackingTheme {
+            CustomColumn {
+                CustomStatsText(text = "Nº runs: ${nRuns.value}")
+            }
+        }
+    }
+
+
+    @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
+    @Composable
+    fun AllLapsStats() {
+        MontblancSkiTrackingTheme {
+            CustomColumn {
+                val hours = activeTime.value.toInt() / 3600
+                val minutes = (activeTime.value.toInt() % 3600) / 60
+                val seconds = (activeTime.value.toInt()) % 60
+
+                CustomStatsText(text = "Distance: ${distTraveled.value.format(1)} m")
+                CustomStatsText(text = "Elevation: ${deltaElevDown.value.format(1)} m")
+                CustomStatsText(text = "Average speed: ${avgSkiingSpeed.value.format(1)} km/h")
+                CustomStatsText(text = "Top speed: ${topSpeed.value.format(1)} km/h")
+                CustomStatsText(text = "Active time: ${String.format("%02dº:%02d'':%02d'", hours, minutes, seconds)}")
+
+            }
+        }
+    }
+
+    @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
+    @Composable
+    fun FinishRun() {
+        MontblancSkiTrackingTheme {
+            CustomColumn {
+                CustomCompactChip("Stop skiing") {
+                    toggleSkiing()
+                }
+            }
+        }
+    }
+
+// BACKUP FROM THE ABOVE FUNCTION
+//    private fun Double.format(decimals: Int) = "%.${decimals}f".format(this)
+//    @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
+//    @Composable
+//    fun StatsApp() {
+//        MontblancSkiTrackingTheme {
+//            CustomColumn {
+//                val hours = activeTime.value.toInt() / 3600
+//                val minutes = (activeTime.value.toInt() % 3600) / 60
+//                val seconds = (activeTime.value.toInt()) % 60
+//
+//                CustomStatsText(text = "Active time: ${String.format("%02d:%02d:%02d", hours, minutes, seconds)}")
+//                CustomStatsText(text = "Nº runs: ${nRuns.value}")
+//                CustomStatsText(text = "Distance: ${distTraveled.value.format(1)} m")
+//                CustomStatsText(text = "Elevation: ${deltaElevDown.value.format(1)} m")
+//                CustomStatsText(text = "Average speed: ${avgSkiingSpeed.value.format(1)} km/h")
+//                CustomStatsText(text = "Top speed: ${topSpeed.value.format(1)} km/h")
+//
+//                val startStopText = if (!isSkiing.value) "Start" else "Stop"
+//                CustomCompactChip(text = "$startStopText skiing") {
+//                    toggleSkiing()
+//                }
+//            }
+//        }
+//    }
 
     //----------------------------------------------------------------------------------------
     // GPS/Location Functions

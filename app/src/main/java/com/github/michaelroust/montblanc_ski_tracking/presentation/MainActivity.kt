@@ -38,7 +38,7 @@ fun MainApp(openFeatureStats: () -> Unit) {
     MontblancSkiTrackingTheme {
         CustomColumn {
             CustomText(text = "Have a safe ride!")
-            CustomChip(text = "Start", onClick = openFeatureStats)
+            CustomChip(text = "Start skiing", onClick = openFeatureStats)
         }
     }
 }
