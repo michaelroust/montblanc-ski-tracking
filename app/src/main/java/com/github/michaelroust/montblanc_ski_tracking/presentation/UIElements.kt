@@ -35,6 +35,7 @@ fun ExampleBox(shape: Shape){
 }
 
 
+
 @Composable
 fun CustomColumnLite(content: @Composable (ColumnScope.() -> Unit)) {
     Column(
@@ -44,6 +45,7 @@ fun CustomColumnLite(content: @Composable (ColumnScope.() -> Unit)) {
         content = content
     )
 }
+
 
 @Composable
 fun CustomColumn(content: @Composable (ColumnScope.() -> Unit)) {

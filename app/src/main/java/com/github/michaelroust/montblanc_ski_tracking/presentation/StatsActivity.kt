@@ -17,6 +17,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.animateFloatAsState
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+
 import androidx.wear.compose.foundation.CurvedTextStyle
 
 import androidx.wear.compose.material.Text
@@ -41,7 +43,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+
 import androidx.wear.compose.material.*
+
+import androidx.wear.compose.material.HorizontalPageIndicator
+import androidx.wear.compose.material.InlineSlider
+import androidx.wear.compose.material.PageIndicatorState
 import com.github.michaelroust.montblanc_ski_tracking.R
 import com.github.michaelroust.montblanc_ski_tracking.presentation.theme.MontblancSkiTrackingTheme
 import com.github.michaelroust.montblanc_ski_tracking.presentation.utilities.Globals.LOG_TAG
@@ -54,6 +61,41 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 
 class StatsActivity : ComponentActivity() {
+    // PAGE INDICATOR
+//    val maxPages = 3
+//    var selectedPage by remember { mutableStateOf(0) }
+//    var finalValue by remember { mutableStateOf(0) }
+//
+//    val animatedSelectedPage by animateFloatAsState(
+//        targetValue = selectedPage.toFloat(),
+//    ) {
+//        finalValue = it.toInt()
+//    }
+//
+//    val pageIndicatorState: PageIndicatorState = remember {
+//        object : PageIndicatorState {
+//            override val pageOffset: Float
+//                get() = animatedSelectedPage - finalValue
+//            override val selectedPage: Int
+//                get() = finalValue
+//            override val pageCount: Int
+//                get() = maxPages
+//        }
+//    }
+//
+//    Box(modifier = Modifier.fillMaxSize().padding(6.dp)) {
+//        InlineSlider(
+//            modifier = Modifier.align(Alignment.Center),
+//            value = selectedPage,
+//            increaseIcon = { Icon(InlineSliderDefaults.Increase, "Increase") },
+//            decreaseIcon = { Icon(InlineSliderDefaults.Decrease, "Decrease") },
+//            valueProgression = 0 until maxPages,
+//            onValueChange = { selectedPage = it }
+//        )
+//        HorizontalPageIndicator(
+//            pageIndicatorState = pageIndicatorState
+//        )
+//    }
 
     companion object {
         const val GPS_LOCATION_INTERVAL_MILLIS = 1000L
@@ -222,6 +264,7 @@ class StatsActivity : ComponentActivity() {
     @Composable
     fun TransitionAllLapsStats() {
         MontblancSkiTrackingTheme {
+
             CustomColumn {
                 CustomInfoText(text = "Statistics over all")
                 Row{
