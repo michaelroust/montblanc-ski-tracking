@@ -35,6 +35,15 @@ fun ExampleBox(shape: Shape){
 }
 
 
+@Composable
+fun CustomColumnLite(content: @Composable (ColumnScope.() -> Unit)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        content = content
+    )
+}
 
 @Composable
 fun CustomColumn(content: @Composable (ColumnScope.() -> Unit)) {
