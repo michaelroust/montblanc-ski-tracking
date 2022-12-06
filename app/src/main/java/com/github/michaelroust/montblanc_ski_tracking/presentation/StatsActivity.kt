@@ -30,6 +30,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Devices
@@ -232,13 +233,7 @@ class StatsActivity : ComponentActivity() {
     @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
     @Composable
     fun OneLapStats() {
-
-
-
-
-
         MontblancSkiTrackingTheme {
-
             CustomColumn {
 
                 CustomStatsTopBottomText(text = "${distTraveled.value.format(1)} m")
@@ -254,6 +249,7 @@ class StatsActivity : ComponentActivity() {
 //                }
             }
         }
+        TimeText()
     }
 
     @OptIn(ExperimentalWearMaterialApi::class)
@@ -262,7 +258,7 @@ class StatsActivity : ComponentActivity() {
     fun TransitionAllLapsStats() {
         MontblancSkiTrackingTheme {
             CustomColumn {
-                //TimeText()
+
                 CustomInfoText(text = "Statistics over all")
                 Row{
                     Icon(Icons.Rounded.Search, contentDescription = "Localized description")
@@ -270,32 +266,15 @@ class StatsActivity : ComponentActivity() {
                 }
             }
         }
+        TimeText()
     }
 
 
 
+    @OptIn(ExperimentalWearMaterialApi::class)
     @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
     @Composable
     fun AllLapsStats() {
-//        val hours = activeTime.value.toInt() / 3600
-//        val minutes = (activeTime.value.toInt() % 3600) / 60
-//        val seconds = (activeTime.value.toInt()) % 60
-//
-//        var textBeforeTime by rememberSaveable { mutableStateOf("${String.format("%02dº:%02d'':%02d'", hours, minutes, seconds)}")
-//        TimeText(
-//            leadingCurvedContent = {
-//                BasicCurvedText(
-//                    text = textBeforeTime,
-//                    style = TimeTextDefaults.timeCurvedTextStyle()
-//                )
-//            }
-//            leadingLinearContent = {
-//                Text(
-//                    text = textBeforeTime,
-//                    style = TimeTextDefaults.timeTextStyle()
-//                )
-//            }
-//        )
         MontblancSkiTrackingTheme {
             CustomColumn {
                 val hours = activeTime.value.toInt() / 3600
@@ -324,25 +303,44 @@ class StatsActivity : ComponentActivity() {
                 }
             }
         }
+        val hours = activeTime.value.toInt() / 3600
+        val minutes = (activeTime.value.toInt() % 3600) / 60
+        val seconds = (activeTime.value.toInt()) % 60
+        
+//        var textBeforeTime by rememberSaveable { mutableStateOf("${String.format("%02dº:%02d'':%02d'", hours, minutes, seconds)}")
+//        TimeText(
+//            leadingCurvedContent = {
+//                BasicCurvedText(
+//                    text = textBeforeTime,
+//                    style = TimeTextDefaults.timeCurvedTextStyle()
+//                )
+//            }
+//            leadingLinearContent = {
+//                Text(
+//                    text = textBeforeTime,
+//                    style = TimeTextDefaults.timeTextStyle()
+//                )
+//            }
+//        )
     }
 
 
+    @OptIn(ExperimentalWearMaterialApi::class)
     @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
     @Composable
     fun FinishRun() {
         MontblancSkiTrackingTheme {
             CustomColumn {
-
                 val startStopText = if (!isSkiing.value) "Resume" else "Pause"
                 CustomCompactChipLite(text = "$startStopText skiing") {
                     toggleSkiing()
                 }
-
                 CustomCompactChip("Stop skiing") {
                     toggleSkiing()
                 }
             }
         }
+        TimeText()
     }
 
 // BACKUP FROM THE ABOVE FUNCTION
