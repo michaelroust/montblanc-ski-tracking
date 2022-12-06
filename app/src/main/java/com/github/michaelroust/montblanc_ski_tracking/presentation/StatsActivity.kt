@@ -17,6 +17,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,6 +26,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.wear.compose.foundation.CurvedTextStyle
 
+import androidx.wear.compose.material.Text
+import androidx.wear.compose.material.TimeText
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
@@ -32,6 +35,8 @@ import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.core.app.ActivityCompat
@@ -49,41 +54,6 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 
 class StatsActivity : ComponentActivity() {
-    // PAGE INDICATOR
-//    val maxPages = 3
-//    var selectedPage by remember { mutableStateOf(0) }
-//    var finalValue by remember { mutableStateOf(0) }
-//
-//    val animatedSelectedPage by animateFloatAsState(
-//        targetValue = selectedPage.toFloat(),
-//    ) {
-//        finalValue = it.toInt()
-//    }
-//
-//    val pageIndicatorState: PageIndicatorState = remember {
-//        object : PageIndicatorState {
-//            override val pageOffset: Float
-//                get() = animatedSelectedPage - finalValue
-//            override val selectedPage: Int
-//                get() = finalValue
-//            override val pageCount: Int
-//                get() = maxPages
-//        }
-//    }
-//
-//    Box(modifier = Modifier.fillMaxSize().padding(6.dp)) {
-//        InlineSlider(
-//            modifier = Modifier.align(Alignment.Center),
-//            value = selectedPage,
-//            increaseIcon = { Icon(InlineSliderDefaults.Increase, "Increase") },
-//            decreaseIcon = { Icon(InlineSliderDefaults.Decrease, "Decrease") },
-//            valueProgression = 0 until maxPages,
-//            onValueChange = { selectedPage = it }
-//        )
-//        HorizontalPageIndicator(
-//            pageIndicatorState = pageIndicatorState
-//        )
-//    }
 
     companion object {
         const val GPS_LOCATION_INTERVAL_MILLIS = 1000L
@@ -242,11 +212,6 @@ class StatsActivity : ComponentActivity() {
                 CustomStatsMiddleText(text = "${topSpeed.value.format(1)}")
                 CustomInfoText(text = "TOP km/h")
                 CustomStatsTopBottomText(text = "${deltaElevDown.value.format(1)} m")
-
-//                val startStopText = if (!isSkiing.value) "Start" else "Stop"
-//                CustomCompactChip(text = "$startStopText skiing") {
-//                    toggleSkiing()
-//                }
             }
         }
         TimeText()
@@ -258,7 +223,6 @@ class StatsActivity : ComponentActivity() {
     fun TransitionAllLapsStats() {
         MontblancSkiTrackingTheme {
             CustomColumn {
-
                 CustomInfoText(text = "Statistics over all")
                 Row{
                     Icon(Icons.Rounded.Search, contentDescription = "Localized description")
@@ -306,22 +270,12 @@ class StatsActivity : ComponentActivity() {
         val hours = activeTime.value.toInt() / 3600
         val minutes = (activeTime.value.toInt() % 3600) / 60
         val seconds = (activeTime.value.toInt()) % 60
-        
-//        var textBeforeTime by rememberSaveable { mutableStateOf("${String.format("%02dº:%02d'':%02d'", hours, minutes, seconds)}")
-//        TimeText(
-//            leadingCurvedContent = {
-//                BasicCurvedText(
-//                    text = textBeforeTime,
-//                    style = TimeTextDefaults.timeCurvedTextStyle()
-//                )
-//            }
-//            leadingLinearContent = {
-//                Text(
-//                    text = textBeforeTime,
-//                    style = TimeTextDefaults.timeTextStyle()
-//                )
-//            }
-//        )
+
+
+
+        val leadingTextStyle = TimeTextDefaults.timeTextStyle(color = MaterialTheme.colors.primary)
+
+        TimeText()
     }
 
 
@@ -330,7 +284,11 @@ class StatsActivity : ComponentActivity() {
     @Composable
     fun FinishRun() {
         MontblancSkiTrackingTheme {
-            CustomColumn {
+            Image(
+                painter = painterResource(id = R.drawable.mountain_round),
+                contentDescription = stringResource(id = R.string.dog_content_description)
+            )
+            CustomColumnLite {
                 val startStopText = if (!isSkiing.value) "Resume" else "Pause"
                 CustomCompactChipLite(text = "$startStopText skiing") {
                     toggleSkiing()
