@@ -23,10 +23,10 @@ TODO
 
 
 ## 🏛 Installation and Usage 
-Download Android Studio
-Clone this repository
-Open this repository as a project folder in Android Studio
-Install Compose
+- Download Android Studio
+- Clone this repository
+- Open this repository as a project folder in Android Studio
+- Install Compose
 
 ## ✍️ Author and Advisors
 - Hugo Parent-Leduc (<a
