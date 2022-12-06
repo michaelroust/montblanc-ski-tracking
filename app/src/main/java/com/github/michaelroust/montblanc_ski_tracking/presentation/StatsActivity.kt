@@ -23,15 +23,19 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.wear.compose.foundation.CurvedTextStyle
+
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Search
+
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.wear.compose.material.HorizontalPageIndicator
-import androidx.wear.compose.material.InlineSlider
-import androidx.wear.compose.material.PageIndicatorState
+import androidx.wear.compose.material.*
 import com.github.michaelroust.montblanc_ski_tracking.R
 import com.github.michaelroust.montblanc_ski_tracking.presentation.theme.MontblancSkiTrackingTheme
 import com.github.michaelroust.montblanc_ski_tracking.presentation.utilities.Globals.LOG_TAG
@@ -224,14 +228,18 @@ class StatsActivity : ComponentActivity() {
 
 
     private fun Double.format(decimals: Int) = "%.${decimals}f".format(this)
+    @OptIn(ExperimentalWearMaterialApi::class)
     @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
     @Composable
     fun OneLapStats() {
-        //TimeText()
+
+
+
+
+
         MontblancSkiTrackingTheme {
 
             CustomColumn {
-
 
                 CustomStatsTopBottomText(text = "${distTraveled.value.format(1)} m")
                 CustomStatsMiddleText(text = "${avgSkiingSpeed.value.format(1)}")
@@ -248,15 +256,18 @@ class StatsActivity : ComponentActivity() {
         }
     }
 
+    @OptIn(ExperimentalWearMaterialApi::class)
     @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
     @Composable
     fun TransitionAllLapsStats() {
         MontblancSkiTrackingTheme {
-            //ContextCompat.getDrawable(this, R.drawable.ic_baseline_arrow_back_24)
-            //val drawable = resources.getDrawable(res.drawable.ic_baseline_arrow_back_24, theme)
             CustomColumn {
+                //TimeText()
                 CustomInfoText(text = "Statistics over all")
-                CustomLapsText(text = "${nRuns.value} laps")
+                Row{
+                    Icon(Icons.Rounded.Search, contentDescription = "Localized description")
+                    CustomLapsText(text = "${nRuns.value} laps")
+                }
             }
         }
     }
@@ -292,22 +303,25 @@ class StatsActivity : ComponentActivity() {
                 val seconds = (activeTime.value.toInt()) % 60
 
                 CustomStatsText(text = "${String.format("%02dº:%02d'':%02d'", hours, minutes, seconds)}")
-                CustomStatsTopBottomText(text = "${distTraveled.value.format(1)} mt")
+
+                Row(horizontalArrangement = Arrangement.SpaceEvenly) {
+                    Icon(Icons.Rounded.Search, contentDescription = "Localized description")
+                    CustomStatsTopBottomText(text = "${distTraveled.value.format(1)} m")
+                }
 
                 Row(horizontalArrangement = Arrangement.SpaceEvenly)  {
                     CustomStatsMiddleText(text = "${topSpeed.value.format(1)}")
                     CustomStatsMiddleText(text = "${avgSkiingSpeed.value.format(1)}")
                 }
-
-
-
                 Row(horizontalArrangement = Arrangement.SpaceEvenly)  {
                     CustomMiddleStatsText(text = "TOP km/h")
                     CustomMiddleStatsText(text = "AVG km/h")
                 }
 
-                CustomStatsTopBottomText(text = "${deltaElevDown.value.format(1)} m")
-
+                Row(horizontalArrangement = Arrangement.SpaceEvenly) {
+                    Icon(Icons.Rounded.Search, contentDescription = "Localized description")
+                    CustomStatsTopBottomText(text = "${deltaElevDown.value.format(1)} m")
+                }
             }
         }
     }

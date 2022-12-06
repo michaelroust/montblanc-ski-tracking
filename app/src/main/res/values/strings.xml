@@ -10,4 +10,5 @@
     <string name="title_activity_stats">StatsActivity</string>
     <string name="title_activity_presentation._safety">presentation.SafetyActivity</string>
     <string name="title_activity_safety">SafetyActivity</string>
+    <string name="dog_content_description">test</string>
 </resources>

@@ -11,9 +11,16 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.wear.compose.material.Icon
+import com.github.michaelroust.montblanc_ski_tracking.R
 import com.github.michaelroust.montblanc_ski_tracking.presentation.theme.MontblancSkiTrackingTheme
 
 class MainActivity : ComponentActivity() {
@@ -36,8 +43,16 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainApp(openFeatureStats: () -> Unit) {
     MontblancSkiTrackingTheme {
+
+        // TRIED TO ADD BACKGROUND IMAGE OF MOUNTAIN
+//        Image(
+//            painter = painterResource(id = R.drawable.mountain),
+//            contentDescription = stringResource(id = R.string.dog_content_description)
+//        )
+
         CustomColumn {
             CustomChip(text = "Start skiing", onClick = openFeatureStats)
+            Icon(Icons.Outlined.PlayArrow, contentDescription = "Localized description")
             CustomText(text = "Press to start skiing")
         }
     }
