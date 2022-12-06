@@ -44,17 +44,17 @@ class MainActivity : ComponentActivity() {
 fun MainApp(openFeatureStats: () -> Unit) {
     MontblancSkiTrackingTheme {
 
-        // TRIED TO ADD BACKGROUND IMAGE OF MOUNTAIN
-//        Image(
-//            painter = painterResource(id = R.drawable.mountain),
-//            contentDescription = stringResource(id = R.string.dog_content_description)
-//        )
+         //TRIED TO ADD BACKGROUND IMAGE OF MOUNTAIN
+        Image(
+            painter = painterResource(id = R.drawable.mountain_round),
+            contentDescription = stringResource(id = R.string.dog_content_description)
+        )
 
-        CustomColumn {
-            CustomChip(text = "Start skiing", onClick = openFeatureStats)
-            Icon(Icons.Outlined.PlayArrow, contentDescription = "Localized description")
-            CustomText(text = "Press to start skiing")
-        }
+//        CustomColumn {
+//            CustomChip(text = "Start skiing", onClick = openFeatureStats)
+//            Icon(Icons.Outlined.PlayArrow, contentDescription = "Localized description")
+//            CustomText(text = "Press to start skiing")
+//        }
     }
 }
 

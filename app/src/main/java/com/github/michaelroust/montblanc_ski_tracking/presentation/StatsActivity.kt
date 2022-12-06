@@ -248,10 +248,10 @@ class StatsActivity : ComponentActivity() {
                 CustomInfoText(text = "TOP km/h")
                 CustomStatsTopBottomText(text = "${deltaElevDown.value.format(1)} m")
 
-                val startStopText = if (!isSkiing.value) "Start" else "Stop"
-                CustomCompactChip(text = "$startStopText skiing") {
-                    toggleSkiing()
-                }
+//                val startStopText = if (!isSkiing.value) "Start" else "Stop"
+//                CustomCompactChip(text = "$startStopText skiing") {
+//                    toggleSkiing()
+//                }
             }
         }
     }
@@ -332,14 +332,16 @@ class StatsActivity : ComponentActivity() {
     fun FinishRun() {
         MontblancSkiTrackingTheme {
             CustomColumn {
+
+                val startStopText = if (!isSkiing.value) "Resume" else "Pause"
+                CustomCompactChipLite(text = "$startStopText skiing") {
+                    toggleSkiing()
+                }
+
                 CustomCompactChip("Stop skiing") {
                     toggleSkiing()
                 }
-                CustomCompactChipLite("Pause skiing") {
-                    //TODO
-                }
             }
-
         }
     }
 
