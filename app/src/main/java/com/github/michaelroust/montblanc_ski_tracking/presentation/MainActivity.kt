@@ -37,8 +37,8 @@ class MainActivity : ComponentActivity() {
 fun MainApp(openFeatureStats: () -> Unit) {
     MontblancSkiTrackingTheme {
         CustomColumn {
-            CustomText(text = "Have a safe ride!")
             CustomChip(text = "Start skiing", onClick = openFeatureStats)
+            CustomText(text = "Press to start skiing")
         }
     }
 }

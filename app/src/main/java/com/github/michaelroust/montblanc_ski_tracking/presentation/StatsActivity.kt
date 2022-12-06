@@ -19,11 +19,16 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.wear.compose.material.HorizontalPageIndicator
+import com.github.michaelroust.montblanc_ski_tracking.R
 import com.github.michaelroust.montblanc_ski_tracking.presentation.theme.MontblancSkiTrackingTheme
 import com.github.michaelroust.montblanc_ski_tracking.presentation.utilities.Globals.LOG_TAG
 import com.github.michaelroust.montblanc_ski_tracking.presentation.utilities.Ticker
@@ -207,12 +212,16 @@ class StatsActivity : ComponentActivity() {
     @Composable
     fun TransitionAllLapsStats() {
         MontblancSkiTrackingTheme {
+//            ContextCompat.getDrawable(this, R.drawable.ic_baseline_arrow_back_24)
+            //val drawable = resources.getDrawable(res.drawable.ic_baseline_arrow_back_24, theme)
+
             CustomColumn {
                 CustomInfoText(text = "Statistics over all")
                 CustomLapsText(text = "${nRuns.value} laps")
             }
         }
     }
+
 
 
     @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
@@ -244,21 +253,26 @@ class StatsActivity : ComponentActivity() {
                 val seconds = (activeTime.value.toInt()) % 60
 
                 CustomStatsText(text = "${String.format("%02dº:%02d'':%02d'", hours, minutes, seconds)}")
-                CustomStatsTopBottomText(text = "${distTraveled.value.format(1)} m")
-                CustomStatsMiddleText(text = "${topSpeed.value.format(1)}")
-                CustomInfoText(text = "TOP km/h")
-                CustomStatsMiddleText(text = "${avgSkiingSpeed.value.format(1)}")
-                CustomInfoText(text = "AVG km/h")
+                CustomStatsTopBottomText(text = "${distTraveled.value.format(1)} mt")
+
+                Row(horizontalArrangement = Arrangement.SpaceEvenly)  {
+                    CustomStatsMiddleText(text = "${topSpeed.value.format(1)}")
+                    CustomStatsMiddleText(text = "${avgSkiingSpeed.value.format(1)}")
+                }
 
 
 
+                Row(horizontalArrangement = Arrangement.SpaceEvenly)  {
+                    CustomMiddleStatsText(text = "TOP km/h")
+                    CustomMiddleStatsText(text = "AVG km/h")
+                }
 
                 CustomStatsTopBottomText(text = "${deltaElevDown.value.format(1)} m")
-
 
             }
         }
     }
+
 
     @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
     @Composable
@@ -268,7 +282,7 @@ class StatsActivity : ComponentActivity() {
                 CustomCompactChip("Stop skiing") {
                     toggleSkiing()
                 }
-                CustomCompactChip("Pause skiing") {
+                CustomCompactChipLite("Pause skiing") {
                     //TODO
                 }
             }
