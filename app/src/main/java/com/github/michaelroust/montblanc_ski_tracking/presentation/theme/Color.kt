@@ -21,6 +21,10 @@ val BlueVariantMontblanc = Color(0xFF38B2C4)
 val OrangeVariantMontblanc = Color(0xFFE8B074)
 val RedVariantMontblanc = Color(0xFFA85A11)
 
+// Various grey tones
+val white = Color(0xFFFFFFFF)
+val lightgrey = Color(0xFFDDDDDD)
+
 internal val wearColorPalette: Colors = Colors(
     primary = OrangeMontblanc,
     primaryVariant = OrangeVariantMontblanc,

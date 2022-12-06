@@ -24,14 +24,9 @@ class MainActivity : ComponentActivity() {
                 openFeatureStats = {
                     val intent = Intent(this, StatsActivity::class.java)
                     startActivity(intent)
-                },
-                openFeatureSafety = {
-                    val intent = Intent(this, SafetyActivity::class.java)
-                    startActivity(intent)
                 }
             )
         }
-
         // Keep screen on. See: https://developer.android.com/training/scheduling/wakelock
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
@@ -39,12 +34,11 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun MainApp(openFeatureStats: () -> Unit, openFeatureSafety: () -> Unit) {
+fun MainApp(openFeatureStats: () -> Unit) {
     MontblancSkiTrackingTheme {
         CustomColumn {
-            CustomText(text = "MainActivity")
-            CustomChip(text = "Feature 1 - Stats", onClick = openFeatureStats)
-            CustomChip(text = "Feature 2 - Safety", onClick = openFeatureSafety)
+            CustomChip(text = "Start skiing", onClick = openFeatureStats)
+            CustomText(text = "Press to start skiing")
         }
     }
 }
@@ -52,5 +46,5 @@ fun MainApp(openFeatureStats: () -> Unit, openFeatureSafety: () -> Unit) {
 @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
 @Composable
 fun DefaultPreview3() {
-    MainApp({/* Do Nothing this is just for UI development */}, {})
+    MainApp({/* Do Nothing this is just for UI development */})
 }
