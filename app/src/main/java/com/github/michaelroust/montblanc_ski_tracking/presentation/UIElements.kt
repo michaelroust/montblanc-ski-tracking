@@ -59,6 +59,15 @@ fun CustomColumn(content: @Composable (ColumnScope.() -> Unit)) {
 }
 
 @Composable
+fun CustomTextLite(text: String) {
+    Text(
+        textAlign = TextAlign.Right,
+        color = MaterialTheme.colors.primary,
+        text = text
+    )
+}
+
+@Composable
 fun CustomText(text: String) {
     Text(
         modifier = Modifier.fillMaxWidth(),
@@ -98,7 +107,7 @@ fun CustomStatsTopBottomText(text: String) {
 
         color = Color(0xFFDDDDDD),
         fontWeight = FontWeight.Bold,
-        fontSize = 24.sp,
+        fontSize = 21.sp,
         text = text
     )
 }
@@ -117,7 +126,7 @@ fun CustomStatsMiddleText(text: String) {
 @Composable
 fun CustomInfoText(text: String) {
     Text(
-        modifier = Modifier.fillMaxWidth(),
+//        modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Center,
         color = Color(0xFFDDDDDD),
         fontSize = 12.sp,

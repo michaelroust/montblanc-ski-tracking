@@ -17,48 +17,27 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.animateFloatAsState
-
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.shape.GenericShape
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-
-import androidx.wear.compose.foundation.CurvedTextStyle
-
-import androidx.wear.compose.material.Text
-import androidx.wear.compose.material.TimeText
-
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
-
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-
 import androidx.wear.compose.material.*
-
-import androidx.wear.compose.material.HorizontalPageIndicator
-import androidx.wear.compose.material.InlineSlider
-import androidx.wear.compose.material.PageIndicatorState
 import com.github.michaelroust.montblanc_ski_tracking.R
 import com.github.michaelroust.montblanc_ski_tracking.presentation.theme.MontblancSkiTrackingTheme
 import com.github.michaelroust.montblanc_ski_tracking.presentation.utilities.Globals.LOG_TAG
 import com.github.michaelroust.montblanc_ski_tracking.presentation.utilities.Ticker
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationListener
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
+import com.google.android.gms.location.*
 
 class StatsActivity : ComponentActivity() {
     // PAGE INDICATOR
@@ -241,6 +220,119 @@ class StatsActivity : ComponentActivity() {
 
 
     private fun Double.format(decimals: Int) = "%.${decimals}f".format(this)
+
+
+    @Composable
+    fun StatsAppGeneric(content: @Composable (ColumnScope.() -> Unit)) {
+        val maxPages = 3
+        var selectedPage by remember { mutableStateOf(0) }
+        var finalValue by remember { mutableStateOf(0) }
+
+        val animatedSelectedPage by animateFloatAsState(
+            targetValue = selectedPage.toFloat(),
+        ) {
+            finalValue = it.toInt()
+        }
+
+        val pageIndicatorState: PageIndicatorState = remember {
+            object : PageIndicatorState {
+                override val pageOffset: Float
+                    get() = animatedSelectedPage - finalValue
+                override val selectedPage: Int
+                    get() = finalValue
+                override val pageCount: Int
+                    get() = maxPages
+            }
+        }
+
+        fun swipeLeft() {
+            if (selectedPage > 0)
+                selectedPage--
+        }
+
+        fun swipeRight() {
+            if (selectedPage < (maxPages - 1))
+                selectedPage++
+        }
+
+        MontblancSkiTrackingTheme {
+            CustomColumnWithSideButtons(
+                leftButtonOnClick = { swipeLeft() },
+                rightButtonOnClick = { swipeRight() },
+                pageIndicatorState = pageIndicatorState,
+                columnContent = content
+            )
+            HorizontalPageIndicator(
+                modifier = Modifier.padding(4.dp),
+                pageIndicatorState = pageIndicatorState
+            )
+        }
+    }
+
+    @OptIn(ExperimentalWearMaterialApi::class)
+    @Composable
+    fun CustomColumnWithSideButtons (
+        leftButtonOnClick: () -> Unit,
+        rightButtonOnClick: () -> Unit,
+        pageIndicatorState: PageIndicatorState,
+        columnContent: @Composable (ColumnScope.() -> Unit)
+    ) {
+        val sideButtonsWidth = 16.dp
+
+        BoxWithConstraints(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.background)
+        ) {
+            Button(
+                modifier = Modifier
+                    // .alpha(0f)
+                    .fillMaxHeight()
+                    .width(sideButtonsWidth)
+                    .align(Alignment.CenterStart),
+                onClick = leftButtonOnClick) {}
+
+            Button(
+                modifier = Modifier
+                    // .alpha(0f)
+                    .fillMaxHeight()
+                    .width(sideButtonsWidth)
+                    .align(Alignment.CenterEnd),
+                onClick = rightButtonOnClick) {}
+
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(this.maxWidth - sideButtonsWidth * 2)
+                    .align(Alignment.Center),
+                verticalArrangement = Arrangement.SpaceEvenly,
+                content = columnContent
+            )
+
+            TimeText()
+        }
+    }
+
+
+    @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
+    @Composable
+    fun OneLapStats2() {
+//        CustomText(text = "Hello")
+        StatsAppGeneric {
+            CustomText(text = "Hello")
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+//                CustomColumnLite {
+//
+//                }
+            }
+
+        }
+    }
+
+
     @OptIn(ExperimentalWearMaterialApi::class)
     @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
     @Composable
