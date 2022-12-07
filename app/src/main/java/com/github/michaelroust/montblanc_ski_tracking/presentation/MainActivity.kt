@@ -12,13 +12,19 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.Icon
 import com.github.michaelroust.montblanc_ski_tracking.R
 import com.github.michaelroust.montblanc_ski_tracking.presentation.theme.MontblancSkiTrackingTheme
@@ -53,8 +59,18 @@ fun MainApp(openFeatureStats: () -> Unit) {
             contentDescription = stringResource(id = R.string.dog_content_description)
         )
         CustomColumnLite {
-            CustomChip(text = "Start", onClick = openFeatureStats)
-            Icon(Icons.Outlined.PlayArrow, contentDescription = "Localized description")
+            Button(
+                modifier = Modifier
+                    .size(60.dp)
+                    .align(CenterHorizontally),
+                onClick = openFeatureStats) {
+                Icon(
+                    Icons.Outlined.PlayArrow,
+                    modifier = Modifier.size(50.dp),
+                    contentDescription = "Localized description")
+            }
+            Spacer(modifier = Modifier.size(10.dp))
+
             CustomText(text = "Press to start skiing")
         }
     }
