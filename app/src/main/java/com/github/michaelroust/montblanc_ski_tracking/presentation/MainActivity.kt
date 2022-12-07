@@ -19,6 +19,11 @@ import com.github.michaelroust.montblanc_ski_tracking.presentation.theme.Montbla
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Code to directly start SafetyActivity
+//        val intent = Intent(this, SafetyActivity::class.java)
+//        startActivity(intent)
+
         setContent {
             MainApp(
                 openFeatureStats = {
