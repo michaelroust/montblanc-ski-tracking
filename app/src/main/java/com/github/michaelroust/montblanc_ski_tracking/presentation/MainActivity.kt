@@ -34,8 +34,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // Code to directly start SafetyActivity
-//        val intent = Intent(this, SafetyActivity::class.java)
-//        startActivity(intent)
+        val intent = Intent(this, SafetyActivity::class.java)
+        startActivity(intent)
 
         setContent {
             MainApp(

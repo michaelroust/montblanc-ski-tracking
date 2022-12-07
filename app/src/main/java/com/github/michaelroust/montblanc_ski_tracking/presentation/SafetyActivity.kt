@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.*
 import com.github.michaelroust.montblanc_ski_tracking.presentation.theme.MontblancSkiTrackingTheme
@@ -29,62 +30,13 @@ class SafetyActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        @Composable
-        fun SafetyApp2() {
-            val maxPages = 3
-            var selectedPage by remember { mutableStateOf(0) }
-            var finalValue by remember { mutableStateOf(0) }
-
-            val animatedSelectedPage by animateFloatAsState(
-                targetValue = selectedPage.toFloat(),
-            ) {
-                finalValue = it.toInt()
-            }
-
-            val pageIndicatorState: PageIndicatorState = remember {
-                object : PageIndicatorState {
-                    override val pageOffset: Float
-                        get() = animatedSelectedPage - finalValue
-                    override val selectedPage: Int
-                        get() = finalValue
-                    override val pageCount: Int
-                        get() = maxPages
-                }
-            }
-
-            fun swipeLeft() {
-                if (selectedPage > 0)
-                    selectedPage--
-            }
-
-            fun swipeRight() {
-                if (selectedPage < (maxPages - 1))
-                    selectedPage++
-            }
-
-            MontblancSkiTrackingTheme {
-                CustomColumn {
-
-                    if (selectedPage != 0) {
-                        CustomChip(text = "Left") {
-                            swipeLeft()
-                        }
-                    }
-
-                    if (selectedPage != maxPages - 1) {
-                        CustomChip(text = "Right") {
-                            swipeRight()
-                        }
-                    }
-                }
-                HorizontalPageIndicator(
-                    pageIndicatorState = pageIndicatorState
-                )
-            }
-        }
-
         setContent {
-            SafetyApp2()
+//            SafetyApp2()
+//            StatsAppGeneric()
+
+            StatsAppGeneric {
+                CustomText(text = "Hello")
+            }
         }
 
         //---------------------------------------------------------------------------------------
@@ -95,11 +47,13 @@ class SafetyActivity : ComponentActivity() {
     }
 }
 
+
 @OptIn(ExperimentalWearMaterialApi::class)
 @Composable
 fun CustomColumnWithSideButtons (
     leftButtonOnClick: () -> Unit,
     rightButtonOnClick: () -> Unit,
+    pageIndicatorState: PageIndicatorState,
     columnContent: @Composable (ColumnScope.() -> Unit)
 ) {
     val sideButtonsWidth = 16.dp
@@ -109,7 +63,6 @@ fun CustomColumnWithSideButtons (
             .fillMaxSize()
             .background(MaterialTheme.colors.background)
     ) {
-
         Button(
             modifier = Modifier
                 // .alpha(0f)
@@ -130,79 +83,92 @@ fun CustomColumnWithSideButtons (
             modifier = Modifier
                 .fillMaxHeight()
                 .width(this.maxWidth - sideButtonsWidth * 2)
-                .background(MaterialTheme.colors.background)
                 .align(Alignment.Center),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.SpaceEvenly,
             content = columnContent
         )
+
         TimeText()
     }
 }
 
 
-@Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
 @Composable
-fun SafetyApp2() {
+fun StatsAppGeneric(content: @Composable (ColumnScope.() -> Unit)) {
+    val maxPages = 3
+    var selectedPage by remember { mutableStateOf(0) }
+    var finalValue by remember { mutableStateOf(0) }
+
+    val animatedSelectedPage by animateFloatAsState(
+        targetValue = selectedPage.toFloat(),
+    ) {
+        finalValue = it.toInt()
+    }
+
+    val pageIndicatorState: PageIndicatorState = remember {
+        object : PageIndicatorState {
+            override val pageOffset: Float
+                get() = animatedSelectedPage - finalValue
+            override val selectedPage: Int
+                get() = finalValue
+            override val pageCount: Int
+                get() = maxPages
+        }
+    }
+
+    fun swipeLeft() {
+        if (selectedPage > 0)
+            selectedPage--
+    }
+
+    fun swipeRight() {
+        if (selectedPage < (maxPages - 1))
+            selectedPage++
+    }
+
     MontblancSkiTrackingTheme {
         CustomColumnWithSideButtons(
-            leftButtonOnClick = { /*TODO*/ },
-            rightButtonOnClick = { /*TODO*/ }) {
-            CustomText(text = "Hello")
-        }
+            leftButtonOnClick = { swipeLeft() },
+            rightButtonOnClick = { swipeRight() },
+            pageIndicatorState = pageIndicatorState,
+            columnContent = content
+        )
+        HorizontalPageIndicator(
+            modifier = Modifier.padding(4.dp),
+            pageIndicatorState = pageIndicatorState
+        )
     }
 }
 
+
+@Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
 @Composable
-fun SafetyApp() {
-    MontblancSkiTrackingTheme {
-        CustomColumn {
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Text(
-                    modifier = Modifier.padding(16.dp),
-//                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colors.primary,
-                    text = "haha"
-                )
-
-                Text(
-                    modifier = Modifier.padding(16.dp),
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colors.primary,
-                    text = "hoho"
-                )
-
-                CompactButton(onClick = { /*TODO*/ }) {
-//
-                }
-
-                Button(
-                    modifier = Modifier.width(16.dp),
-                    onClick = { /*TODO*/ }) {
-
-                }
-
-//                CustomText(text = "haha")
-//                CustomText(text = "hoho")
-//                ChipCounter()
-//                ChipCounter()
-            }
-
-
-
-//            Button(onClick = { /*TODO*/ }) {
-//
-//            }
-        }
+fun RunningPreview() {
+    StatsAppGeneric {
+        CustomText(text = "Hello")
     }
 }
 
 @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
 @Composable
-fun DefaultPreview() {
-    SafetyApp()
+fun StatsPrePreview() {
+    StatsAppGeneric {
+        CustomText(text = "Hello")
+    }
+}
+
+@Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
+@Composable
+fun StatsPreview() {
+    StatsAppGeneric {
+        CustomText(text = "Hello")
+    }
+}
+
+@Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
+@Composable
+fun FinalPreview() {
+    StatsAppGeneric {
+        CustomText(text = "Hello")
+    }
 }
