@@ -11,11 +11,17 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.wear.compose.material.HorizontalPageIndicator
-import androidx.wear.compose.material.PageIndicatorState
+import androidx.compose.ui.unit.dp
+import androidx.wear.compose.material.*
 import com.github.michaelroust.montblanc_ski_tracking.presentation.theme.MontblancSkiTrackingTheme
 
 class SafetyActivity : ComponentActivity() {
@@ -89,13 +95,108 @@ class SafetyActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalWearMaterialApi::class)
+@Composable
+fun CustomColumnWithSideButtons (
+    leftButtonOnClick: () -> Unit,
+    rightButtonOnClick: () -> Unit,
+    columnContent: @Composable (ColumnScope.() -> Unit)
+) {
+    val sideButtonsWidth = 16.dp
+
+    BoxWithConstraints(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.background)
+    ) {
+
+        Button(
+            modifier = Modifier
+                // .alpha(0f)
+                .fillMaxHeight()
+                .width(sideButtonsWidth)
+                .align(Alignment.CenterStart),
+            onClick = leftButtonOnClick) {}
+
+        Button(
+            modifier = Modifier
+                // .alpha(0f)
+                .fillMaxHeight()
+                .width(sideButtonsWidth)
+                .align(Alignment.CenterEnd),
+            onClick = rightButtonOnClick) {}
+
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(this.maxWidth - sideButtonsWidth * 2)
+                .background(MaterialTheme.colors.background)
+                .align(Alignment.Center),
+            verticalArrangement = Arrangement.Center,
+            content = columnContent
+        )
+        TimeText()
+    }
+}
+
+
+@Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
+@Composable
+fun SafetyApp2() {
+    MontblancSkiTrackingTheme {
+        CustomColumnWithSideButtons(
+            leftButtonOnClick = { /*TODO*/ },
+            rightButtonOnClick = { /*TODO*/ }) {
+            CustomText(text = "Hello")
+        }
+    }
+}
 
 @Composable
 fun SafetyApp() {
     MontblancSkiTrackingTheme {
         CustomColumn {
-            CustomText(text = "SafetyActivity")
-            ChipCounter()
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Text(
+                    modifier = Modifier.padding(16.dp),
+//                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colors.primary,
+                    text = "haha"
+                )
+
+                Text(
+                    modifier = Modifier.padding(16.dp),
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colors.primary,
+                    text = "hoho"
+                )
+
+                CompactButton(onClick = { /*TODO*/ }) {
+//
+                }
+
+                Button(
+                    modifier = Modifier.width(16.dp),
+                    onClick = { /*TODO*/ }) {
+
+                }
+
+//                CustomText(text = "haha")
+//                CustomText(text = "hoho")
+//                ChipCounter()
+//                ChipCounter()
+            }
+
+
+
+//            Button(onClick = { /*TODO*/ }) {
+//
+//            }
         }
     }
 }
