@@ -22,7 +22,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Replay
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -47,10 +46,11 @@ import com.github.michaelroust.montblanc_ski_tracking.presentation.utilities.Glo
 import com.github.michaelroust.montblanc_ski_tracking.presentation.utilities.Ticker
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.*
+import java.lang.Double.max
 
 class StatsActivity : ComponentActivity() {
     companion object {
-        const val GPS_LOCATION_INTERVAL_MILLIS = 200L
+        const val GPS_LOCATION_INTERVAL_MILLIS = 1000L
     }
 
     private val isSkiing = mutableStateOf(false)
@@ -61,6 +61,12 @@ class StatsActivity : ComponentActivity() {
     private val curSpeed = mutableStateOf(0.0)
     private val avgSkiingSpeed = mutableStateOf(0.0)
     private val topSpeed = mutableStateOf(0.0)
+
+    private val totalActiveTime = mutableStateOf(0.0)
+    private val totalDistTraveled = mutableStateOf(0.0)
+    private val totalDeltaElevDown = mutableStateOf(0.0)
+    private val totalAvgSkiingSpeed = mutableStateOf(0.0)
+    private val totalTopSpeed = mutableStateOf(0.0)
 
     lateinit var activeTimeTicker: Ticker
     lateinit var locationClient: FusedLocationProviderClient
@@ -111,14 +117,39 @@ class StatsActivity : ComponentActivity() {
     }
 
     private fun startSkiing() {
-        isSkiing.value = true
-        activeTimeTicker.start()
+        if (!isSkiing.value) {
+            Log.d(LOG_TAG, "Started skiing")
+
+            isSkiing.value = true
+
+            activeTime.value = 0.0
+            distTraveled.value = 0.0
+            deltaElevDown.value = 0.0
+            curSpeed.value = 0.0
+            avgSkiingSpeed.value = 0.0
+            topSpeed.value = 0.0
+
+            activeTimeTicker.start()
+        }
     }
 
     private fun stopSkiing() {
-        isSkiing.value = false
-        activeTimeTicker.stop()
-        nRuns.value++
+        if (isSkiing.value) {
+            Log.d(LOG_TAG, "Stopped skiing")
+
+            isSkiing.value = false
+            activeTimeTicker.stop()
+            nRuns.value++
+
+            totalActiveTime.value += activeTime.value
+            totalDistTraveled.value += distTraveled.value
+            totalDeltaElevDown.value += deltaElevDown.value
+
+            totalSpeedTimeSum += speedTimeSum
+            totalTimeSum += timeSum
+            totalAvgSkiingSpeed.value = totalSpeedTimeSum / totalTimeSum
+            totalTopSpeed.value = max(totalTopSpeed.value, topSpeed.value)
+        }
     }
 
     //---------------------------------------------------------------------------------------
@@ -131,7 +162,12 @@ class StatsActivity : ComponentActivity() {
     var speedTimeSum: Double = 0.0
     var timeSum: Double = 0.0
 
+    var totalSpeedTimeSum: Double = 0.0
+    var totalTimeSum: Double = 0.0
+
     private val locationListener = LocationListener { location ->
+
+        Log.d(LOG_TAG, "isSkiing: $isSkiing \tLocation Listener: $location")
 
         // Update current speed
         curSpeed.value = location.speed * 3.6
@@ -145,7 +181,7 @@ class StatsActivity : ComponentActivity() {
             prevLocationBuffer = null
         } else {
 
-            if (curSpeed.value < 3) {
+            if (curSpeed.value < 2) {
                 stopSkiing()
             }
         }
@@ -194,8 +230,6 @@ class StatsActivity : ComponentActivity() {
 
             prevLocationBuffer = location
         }
-
-        Log.d(LOG_TAG, "Location Listener: $location")
     }
 
     //----------------------------------------------------------------------------------------
@@ -245,6 +279,17 @@ class StatsActivity : ComponentActivity() {
                     .width(sideButtonsWidth)
                     .align(Alignment.CenterEnd),
                 onClick = rightButtonOnClick) {}
+
+            // TODO Comment this debug button out.
+//            Button(
+//                modifier = Modifier
+//                    .alpha(sideButtonAlpha)
+//                    .fillMaxHeight()
+//                    .width(30.dp)
+//                    .align(Alignment.Center),
+//                onClick = {
+//                    toggleSkiing()
+//                }) {}
 
             Column(
                 modifier = Modifier
@@ -303,7 +348,7 @@ class StatsActivity : ComponentActivity() {
             ) {
 
                 if (selectedPage == 0)
-                    StatsStuff()
+                    StatsStuff(false)
                 else if (selectedPage == 1) {
                     LapsStatsStuff()
 //                    if (true) {
@@ -312,7 +357,7 @@ class StatsActivity : ComponentActivity() {
 //                        StatsStuff(activeTime.value, distTraveled = 100.0, avgSkiingSpeed = 10.0, topSpeed = 50.0, deltaElevDown = 100.0)
 //                    }
                 } else if (selectedPage == 2) {
-                    StatsStuff()
+                    StatsStuff(true)
 //                    CustomColumnLite {
 //                        val startStopText = if (false) "Resume" else "Pause"
 //                        CustomCompactChipLite(text = "$startStopText skiing") {
@@ -364,28 +409,32 @@ class StatsActivity : ComponentActivity() {
         }
     }
 
+    private fun formatTime(time:Int): String {
+        val hours = time / 3600
+        val minutes = (time % 3600) / 60
+        val seconds = time % 60
+
+        return String.format("%02dº%02d'%02d''", hours, minutes, seconds)
+    }
 
     @Composable
-    fun StatsStuff() {
+    fun StatsStuff(showTotals: Boolean) {
 
-        var distanceTraveledText by remember { mutableStateOf("${distTraveled.value.format(1)} m")}
-//        val distanceTraveledText =
-        val avgSpeedText = avgSkiingSpeed.value.format(1)
-        val topSpeedText = topSpeed.value.format(1)
-        val elevText = "${deltaElevDown.value.format(1)} m"
+        val activeTimeText = formatTime((if (!showTotals) activeTime else totalActiveTime).value.toInt())
+        val distTraveledText = "${(if (!showTotals) distTraveled else totalDistTraveled).value.format(1)} m"
+        val avgSpeedText = (if (!showTotals) avgSkiingSpeed else totalAvgSkiingSpeed).value.format(1)
+        val topSpeedText = (if (!showTotals) topSpeed else totalTopSpeed).value.format(1)
+        val elevText = "${(if (!showTotals) deltaElevDown else totalDeltaElevDown).value.format(1)} m"
 
-        val hours = activeTime.value.toInt() / 3600
-        val minutes = (activeTime.value.toInt() % 3600) / 60
-        val seconds = (activeTime.value.toInt()) % 60
+        Text(
+            modifier = Modifier.fillMaxWidth().padding(top = 5.dp),
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colors.primary,
+            fontSize = 16.sp,
+            text = activeTimeText
+        )
 
-        Spacer(
-            Modifier
-                .fillMaxWidth()
-                .height(0.dp))
-
-        CustomStatsText(text = String.format("%02dº:%02d'':%02d'", hours, minutes, seconds))
-
-        CustomStatsTopBottomText(distanceTraveledText)
+        CustomStatsTopBottomText(distTraveledText)
 
         Row(
             modifier = Modifier
