@@ -139,7 +139,7 @@ fun CustomInfoText(text: String) {
 fun CustomLapsText(text: String) {
 
     Text(
-        modifier = Modifier.fillMaxWidth(),
+//        modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Center,
         color = MaterialTheme.colors.primary,
         fontSize = 32.sp,

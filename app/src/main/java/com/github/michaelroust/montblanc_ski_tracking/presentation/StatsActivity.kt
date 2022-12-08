@@ -380,7 +380,7 @@ class StatsActivity : ComponentActivity() {
                 val minutes = (activeTime.value.toInt() % 3600) / 60
                 val seconds = (activeTime.value.toInt()) % 60
 
-                CustomStatsText(text = "${String.format("%02dº:%02d'':%02d'", hours, minutes, seconds)}")
+                CustomStatsText(text = String.format("%02dº:%02d'':%02d'", hours, minutes, seconds))
 
                 Row(horizontalArrangement = Arrangement.SpaceEvenly) {
                     Icon(Icons.Rounded.Search, contentDescription = "Localized description")
