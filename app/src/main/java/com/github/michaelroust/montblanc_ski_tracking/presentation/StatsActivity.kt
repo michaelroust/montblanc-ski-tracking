@@ -50,7 +50,7 @@ import com.google.android.gms.location.*
 
 class StatsActivity : ComponentActivity() {
     companion object {
-        const val GPS_LOCATION_INTERVAL_MILLIS = 1000L
+        const val GPS_LOCATION_INTERVAL_MILLIS = 200L
     }
 
     private val isSkiing = mutableStateOf(false)
@@ -133,14 +133,23 @@ class StatsActivity : ComponentActivity() {
 
     private val locationListener = LocationListener { location ->
 
-        if (!isSkiing.value) {
-            // Set Previous Location to null. Needed due to design of average speed computation.
-            prevLocationBuffer = null
-        }
-        val prevLocation = prevLocationBuffer
-
         // Update current speed
         curSpeed.value = location.speed * 3.6
+
+        if (!isSkiing.value) {
+            // Set Previous Location to null. Needed due to design of average speed computation.
+            if (curSpeed.value >= 3) {
+                startSkiing()
+            }
+
+            prevLocationBuffer = null
+        } else {
+
+            if (curSpeed.value < 3) {
+                stopSkiing()
+            }
+        }
+        val prevLocation = prevLocationBuffer
 
         // Update top speed as needed
         if (curSpeed.value > topSpeed.value)
@@ -294,16 +303,16 @@ class StatsActivity : ComponentActivity() {
             ) {
 
                 if (selectedPage == 0)
-                    StatsStuff(activeTime, distTraveled = distTraveled, avgSkiingSpeed = avgSkiingSpeed, topSpeed = topSpeed, deltaElevDown = deltaElevDown)
+                    StatsStuff()
                 else if (selectedPage == 1) {
-                    LapsStatsStuff(nLaps = nRuns.value)
+                    LapsStatsStuff()
 //                    if (true) {
 //                        LapsStatsStuff(nLaps = nRuns.value)
 //                    } else {
 //                        StatsStuff(activeTime.value, distTraveled = 100.0, avgSkiingSpeed = 10.0, topSpeed = 50.0, deltaElevDown = 100.0)
 //                    }
                 } else if (selectedPage == 2) {
-                    StatsStuff(activeTime.value, distTraveled = 100.0, avgSkiingSpeed = 10.0, topSpeed = 50.0, deltaElevDown = 100.0)
+                    StatsStuff()
 //                    CustomColumnLite {
 //                        val startStopText = if (false) "Resume" else "Pause"
 //                        CustomCompactChipLite(text = "$startStopText skiing") {
@@ -326,7 +335,7 @@ class StatsActivity : ComponentActivity() {
 
 
     @Composable
-    fun LapsStatsStuff(nLaps:Int) {
+    fun LapsStatsStuff() {
         CustomColumn {
 
             Text(
@@ -350,16 +359,17 @@ class StatsActivity : ComponentActivity() {
                     modifier = Modifier.align(CenterVertically)
                 )
                 Spacer(Modifier.width(4.dp))
-                CustomLapsText(text = "$nLaps laps")
+                CustomLapsText(text = "${nRuns.value} laps")
             }
         }
     }
 
 
     @Composable
-    fun StatsStuff(activeTime: MutableState<Double>, distTraveled:MutableState<Double>, avgSkiingSpeed:MutableState<Double>, topSpeed:MutableState<Double>, deltaElevDown:MutableState<Double>) {
+    fun StatsStuff() {
 
-        val distanceTraveledText = "${distTraveled.value.format(1)} m"
+        var distanceTraveledText by remember { mutableStateOf("${distTraveled.value.format(1)} m")}
+//        val distanceTraveledText =
         val avgSpeedText = avgSkiingSpeed.value.format(1)
         val topSpeedText = topSpeed.value.format(1)
         val elevText = "${deltaElevDown.value.format(1)} m"
