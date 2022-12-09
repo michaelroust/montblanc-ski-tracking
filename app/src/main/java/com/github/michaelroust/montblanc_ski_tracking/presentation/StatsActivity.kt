@@ -9,8 +9,7 @@ package com.github.michaelroust.montblanc_ski_tracking.presentation
 import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Location
-import android.os.Bundle
-import android.os.Looper
+import android.os.*
 import android.util.Log
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
@@ -70,6 +69,7 @@ class StatsActivity : ComponentActivity() {
 
     lateinit var activeTimeTicker: Ticker
     lateinit var locationClient: FusedLocationProviderClient
+    lateinit var vibrator: Vibrator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,9 +84,9 @@ class StatsActivity : ComponentActivity() {
         )
 
         //-----------------------------------------------------------------------------------
-        // Sensors setup
+        // Vibration setup
 
-        // TODO If needed...
+        vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
 
         //-----------------------------------------------------------------------------------
         // Location setup
@@ -152,6 +152,16 @@ class StatsActivity : ComponentActivity() {
         }
     }
 
+    private fun vibrate(double: Boolean) {
+        recentVibration = true
+
+        vibrator.vibrate(200)
+        if (double)
+            Handler().postDelayed({vibrator.vibrate(200)}, 400)
+
+        Handler().postDelayed({recentVibration = false}, 5000)
+    }
+
     //---------------------------------------------------------------------------------------
     // Location listener code
     //      All code here is related to updating all statistics related to Location data.
@@ -165,6 +175,8 @@ class StatsActivity : ComponentActivity() {
     var totalSpeedTimeSum: Double = 0.0
     var totalTimeSum: Double = 0.0
 
+    var recentVibration: Boolean = false
+
     private val locationListener = LocationListener { location ->
 
         Log.d(LOG_TAG, "isSkiing: $isSkiing \tLocation Listener: $location")
@@ -174,18 +186,26 @@ class StatsActivity : ComponentActivity() {
 
         if (!isSkiing.value) {
             // Set Previous Location to null. Needed due to design of average speed computation.
-            if (curSpeed.value >= 3) {
+            if (curSpeed.value >= 20) {
                 startSkiing()
             }
 
             prevLocationBuffer = null
         } else {
 
-            if (curSpeed.value < 2) {
+            if (curSpeed.value < 10) {
                 stopSkiing()
             }
         }
         val prevLocation = prevLocationBuffer
+
+        if (curSpeed.value > 30 && curSpeed.value < 31) {
+            vibrate(false)
+        }
+
+        if (curSpeed.value > 60 && curSpeed.value < 61) {
+            vibrate(true)
+        }
 
         // Update top speed as needed
         if (curSpeed.value > topSpeed.value)
@@ -427,7 +447,9 @@ class StatsActivity : ComponentActivity() {
         val elevText = "${(if (!showTotals) deltaElevDown else totalDeltaElevDown).value.format(1)} m"
 
         Text(
-            modifier = Modifier.fillMaxWidth().padding(top = 5.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 5.dp),
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.primary,
             fontSize = 16.sp,
