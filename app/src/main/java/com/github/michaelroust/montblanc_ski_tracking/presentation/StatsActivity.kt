@@ -20,7 +20,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Replay
+//import androidx.compose.material.icons.rounded.Replay
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -236,7 +237,7 @@ class StatsActivity : ComponentActivity() {
             // Distance traveled calculations
 
             if (prevLocation != null) {
-                distTraveled.value += prevLocation.distanceTo(location)
+                distTraveled.value += prevLocation.distanceTo(location)*0.001 //DOUBLECHECK
             }
 
             //--------------------------------------------------------------------
@@ -419,7 +420,7 @@ class StatsActivity : ComponentActivity() {
                 horizontalArrangement = Arrangement.Center
             ) {
                 Icon(
-                    Icons.Rounded.Replay,
+                    Icons.Rounded.Search,
                     "Localized description",
                     modifier = Modifier.align(CenterVertically)
                 )
@@ -441,7 +442,7 @@ class StatsActivity : ComponentActivity() {
     fun StatsStuff(showTotals: Boolean) {
 
         val activeTimeText = formatTime((if (!showTotals) activeTime else totalActiveTime).value.toInt())
-        val distTraveledText = "${(if (!showTotals) distTraveled else totalDistTraveled).value.format(1)} m"
+        val distTraveledText = "${(if (!showTotals) distTraveled else totalDistTraveled).value.format(1)} km"
         val avgSpeedText = (if (!showTotals) avgSkiingSpeed else totalAvgSkiingSpeed).value.format(1)
         val topSpeedText = (if (!showTotals) topSpeed else totalTopSpeed).value.format(1)
         val elevText = "${(if (!showTotals) deltaElevDown else totalDeltaElevDown).value.format(1)} m"
@@ -452,7 +453,7 @@ class StatsActivity : ComponentActivity() {
                 .padding(top = 5.dp),
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.primary,
-            fontSize = 16.sp,
+            fontSize = 14.sp,
             text = activeTimeText
         )
 
@@ -473,7 +474,7 @@ class StatsActivity : ComponentActivity() {
 
                     Text(
                         textAlign = TextAlign.Right,
-                        fontSize = 18.sp,
+                        fontSize = 20.sp,
                         color = MaterialTheme.colors.primary,
                         fontWeight = FontWeight.Bold,
                         text = avgSpeedText
@@ -491,7 +492,7 @@ class StatsActivity : ComponentActivity() {
                 ) {
                     Text(
                         textAlign = TextAlign.Right,
-                        fontSize = 18.sp,
+                        fontSize = 20.sp,
                         color = MaterialTheme.colors.primary,
                         fontWeight = FontWeight.Bold,
                         text = topSpeedText

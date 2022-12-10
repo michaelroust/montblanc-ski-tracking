@@ -107,7 +107,7 @@ fun CustomStatsTopBottomText(text: String) {
 
         color = Color(0xFFDDDDDD),
         fontWeight = FontWeight.Bold,
-        fontSize = 21.sp,
+        fontSize = 18.sp,
         text = text
     )
 }
@@ -128,7 +128,7 @@ fun CustomInfoText(text: String) {
     Text(
 //        modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Center,
-        color = Color(0xFFDDDDDD),
+        color = MaterialTheme.colors.primary,
         fontSize = 12.sp,
         fontWeight = FontWeight.Bold,
         text = text
