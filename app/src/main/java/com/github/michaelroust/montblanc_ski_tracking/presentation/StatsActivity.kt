@@ -20,7 +20,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+
+//UN-COMMENT THE THREE LINES BELOW
 //import androidx.compose.material.icons.rounded.Replay
+//import androidx.compose.material.icons.rounded.Landscape
+//import androidx.compose.material.icons.rounded.Height
+
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -420,7 +425,8 @@ class StatsActivity : ComponentActivity() {
                 horizontalArrangement = Arrangement.Center
             ) {
                 Icon(
-                    Icons.Rounded.Search,
+                    //Icons.Rounded.Replay, //UN-COMMENT THIS LINE
+                    Icons.Rounded.Search, //COMMENT THIS LINE
                     "Localized description",
                     modifier = Modifier.align(CenterVertically)
                 )
@@ -457,7 +463,22 @@ class StatsActivity : ComponentActivity() {
             text = activeTimeText
         )
 
-        CustomStatsTopBottomText(distTraveledText)
+
+        Row(
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                Icons.Rounded.Search, //COMMENT THIS LINE
+                //Icons.Rounded.Landscape, //UN-COMMENT THIS LINE
+                "Localized description",
+                modifier = Modifier.align(CenterVertically)
+            )
+            Spacer(Modifier.width(4.dp))
+            CustomStatsTopBottomText(distTraveledText)
+        }
+
+        //CustomStatsTopBottomText(distTraveledText)
+
 
         Row(
             modifier = Modifier
@@ -502,8 +523,19 @@ class StatsActivity : ComponentActivity() {
                 CustomInfoText(text = "TOP km/h")
             }
         }
-
-        CustomStatsTopBottomText(elevText)
+        Row(
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                Icons.Rounded.Search, //COMMENT THIS LINE
+                //Icons.Rounded.Height, //UN-COMMENT THIS LINE
+                "Localized description",
+                modifier = Modifier.align(CenterVertically)
+            )
+            Spacer(Modifier.width(4.dp))
+            CustomStatsTopBottomText(elevText)
+        }
+        //CustomStatsTopBottomText(elevText)
     }
 
     //----------------------------------------------------------------------------------------
