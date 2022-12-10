@@ -445,7 +445,7 @@ class StatsActivity : ComponentActivity() {
         val distTraveledText = "${(if (!showTotals) distTraveled else totalDistTraveled).value.format(1)} km"
         val avgSpeedText = (if (!showTotals) avgSkiingSpeed else totalAvgSkiingSpeed).value.format(1)
         val topSpeedText = (if (!showTotals) topSpeed else totalTopSpeed).value.format(1)
-        val elevText = "${(if (!showTotals) deltaElevDown else totalDeltaElevDown).value.format(1)} m"
+        val elevText = "${(if (!showTotals) deltaElevDown else totalDeltaElevDown).value.format(0)} m"
 
         Text(
             modifier = Modifier
@@ -474,7 +474,7 @@ class StatsActivity : ComponentActivity() {
 
                     Text(
                         textAlign = TextAlign.Right,
-                        fontSize = 20.sp,
+                        fontSize = 24.sp,
                         color = MaterialTheme.colors.primary,
                         fontWeight = FontWeight.Bold,
                         text = avgSpeedText
@@ -492,7 +492,7 @@ class StatsActivity : ComponentActivity() {
                 ) {
                     Text(
                         textAlign = TextAlign.Right,
-                        fontSize = 20.sp,
+                        fontSize = 24.sp,
                         color = MaterialTheme.colors.primary,
                         fontWeight = FontWeight.Bold,
                         text = topSpeedText

@@ -107,7 +107,7 @@ fun CustomStatsTopBottomText(text: String) {
 
         color = Color(0xFFDDDDDD),
         fontWeight = FontWeight.Bold,
-        fontSize = 18.sp,
+        fontSize = 20.sp,
         text = text
     )
 }
@@ -118,7 +118,7 @@ fun CustomStatsMiddleText(text: String) {
         textAlign = TextAlign.Center,
         color = MaterialTheme.colors.primary,
         fontWeight = FontWeight.Bold,
-        fontSize = 32.sp,
+        fontSize = 36.sp,
         text = text
     )
 }
