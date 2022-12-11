@@ -467,6 +467,7 @@ class StatsActivity : ComponentActivity() {
         Row(
             horizontalArrangement = Arrangement.Center
         ) {
+            Spacer(Modifier.width(28.dp))
             Icon(
                 Icons.Rounded.Search, //COMMENT THIS LINE
                 //Icons.Rounded.Landscape, //UN-COMMENT THIS LINE
@@ -526,6 +527,7 @@ class StatsActivity : ComponentActivity() {
         Row(
             horizontalArrangement = Arrangement.Center
         ) {
+            Spacer(Modifier.width(38.dp))
             Icon(
                 Icons.Rounded.Search, //COMMENT THIS LINE
                 //Icons.Rounded.Height, //UN-COMMENT THIS LINE
