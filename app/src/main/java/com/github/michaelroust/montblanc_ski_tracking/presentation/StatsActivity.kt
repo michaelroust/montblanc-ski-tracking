@@ -22,9 +22,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 
 //UN-COMMENT THE THREE LINES BELOW
-//import androidx.compose.material.icons.rounded.Replay
-//import androidx.compose.material.icons.rounded.Landscape
-//import androidx.compose.material.icons.rounded.Height
+import androidx.compose.material.icons.rounded.Replay
+import androidx.compose.material.icons.rounded.Landscape
+import androidx.compose.material.icons.rounded.Height
 
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.*
@@ -425,8 +425,8 @@ class StatsActivity : ComponentActivity() {
                 horizontalArrangement = Arrangement.Center
             ) {
                 Icon(
-                    //Icons.Rounded.Replay, //UN-COMMENT THIS LINE
-                    Icons.Rounded.Search, //COMMENT THIS LINE
+                    Icons.Rounded.Replay, //UN-COMMENT THIS LINE
+                    //Icons.Rounded.Search, //COMMENT THIS LINE
                     "Localized description",
                     modifier = Modifier.align(CenterVertically)
                 )
@@ -469,8 +469,8 @@ class StatsActivity : ComponentActivity() {
         ) {
             Spacer(Modifier.width(28.dp))
             Icon(
-                Icons.Rounded.Search, //COMMENT THIS LINE
-                //Icons.Rounded.Landscape, //UN-COMMENT THIS LINE
+                //Icons.Rounded.Search, //COMMENT THIS LINE
+                Icons.Rounded.Landscape, //UN-COMMENT THIS LINE
                 "Localized description",
                 modifier = Modifier.align(CenterVertically)
             )
@@ -529,8 +529,8 @@ class StatsActivity : ComponentActivity() {
         ) {
             Spacer(Modifier.width(38.dp))
             Icon(
-                Icons.Rounded.Search, //COMMENT THIS LINE
-                //Icons.Rounded.Height, //UN-COMMENT THIS LINE
+                //Icons.Rounded.Search, //COMMENT THIS LINE
+                Icons.Rounded.Height, //UN-COMMENT THIS LINE
                 "Localized description",
                 modifier = Modifier.align(CenterVertically)
             )
