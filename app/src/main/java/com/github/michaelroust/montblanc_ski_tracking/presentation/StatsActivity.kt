@@ -159,13 +159,56 @@ class StatsActivity : ComponentActivity() {
     }
 
     private fun vibrate(double: Boolean) {
+        if (!double)
+            posVibation()
+        else
+            negVibation()
+    }
+
+    val smallVibrationTime = 100L
+    val bigVibrationTime = 300L
+
+    private fun posVibation() {
+        if (!recentVibration) {
+            vibrator.vibrate(smallVibrationTime)
+            Handler().postDelayed({vibrator.vibrate(bigVibrationTime)}, 200)
+        }
+
         recentVibration = true
+        Handler().postDelayed({recentVibration = false}, 3000)
+    }
 
-        vibrator.vibrate(200)
-        if (double)
-            Handler().postDelayed({vibrator.vibrate(200)}, 400)
+    private fun negVibation() {
 
-        Handler().postDelayed({recentVibration = false}, 5000)
+        if (!recentVibration) {
+            vibrator.vibrate(smallVibrationTime)
+
+            Handler().postDelayed({
+                vibrator.vibrate(smallVibrationTime)
+                Handler().postDelayed({
+                    vibrator.vibrate(bigVibrationTime)
+                    Handler().postDelayed({
+                        vibrator.vibrate(smallVibrationTime)
+
+                        Handler().postDelayed({
+                            vibrator.vibrate(smallVibrationTime)
+                            Handler().postDelayed({
+                                vibrator.vibrate(smallVibrationTime)
+                                Handler().postDelayed({
+                                    vibrator.vibrate(bigVibrationTime)
+                                    Handler().postDelayed({
+                                        vibrator.vibrate(smallVibrationTime)
+                                    }, 200)
+                                }, 400)
+                            }, 200)
+                        }, 600)
+                                          }, 200)
+                                      }, 400)
+                                  }, 200)
+        }
+
+        recentVibration = true
+        Handler().postDelayed({recentVibration = false}, 3000)
     }
 
     //---------------------------------------------------------------------------------------
@@ -305,6 +348,25 @@ class StatsActivity : ComponentActivity() {
                     .width(sideButtonsWidth)
                     .align(Alignment.CenterEnd),
                 onClick = rightButtonOnClick) {}
+
+            // Vibration debug button 1
+            Button(
+                modifier = Modifier
+                    .alpha(sideButtonAlpha)
+                    .width(this.maxWidth - sideButtonsWidth * 2)
+                    .height(this.maxHeight / 2)
+                    .align(Alignment.TopCenter),
+                onClick = {vibrate(false)}) {}
+
+            // Vibration debug button 2
+            Button(
+                modifier = Modifier
+                    .alpha(sideButtonAlpha)
+                    .width(this.maxWidth - sideButtonsWidth * 2)
+                    .height(this.maxHeight / 2)
+                    .align(Alignment.BottomCenter),
+                onClick = {vibrate(true)}) {}
+
 
             // TODO Comment this debug button out.
 //            Button(
