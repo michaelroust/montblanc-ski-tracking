@@ -6,11 +6,14 @@
 ---
 
 ## 📝 Table of Contents
-- [🧐 About](#-about)
-- [🏁 Summary](#-research-summary)
-- [💻 Links](#️-links)
-- [🏛 Installation and Usage ](#-installation-and-usage)
-- [✍️ Authors and Advisors](#️-authors-and-advisors)
+- [⌚️ Montblanc - Ski Tracking Feature - 2022](#️-montblanc---ski-tracking-feature---2022)
+  - [📝 Table of Contents](#-table-of-contents)
+  - [🧐 About](#-about)
+  - [🏁 Summary](#-summary)
+  - [💻 Links](#-links)
+  - [🏛 Installation and Usage](#-installation-and-usage)
+  - [Code organization](#code-organization)
+  - [✍️ Author and Advisors](#️-author-and-advisors)
 
 ## 🧐 About
 TODO
@@ -19,14 +22,24 @@ TODO
 TODO
 
 ## 💻 Links
-- <a href="https://developer.android.com/studio?gclid=Cj0KCQjwteOaBhDuARIsADBqRejGiRHy0a3ZSJ92Rs2zOCbQZUr9CVS1UY6qBSoiPj3i9AZIqBBpN5MaAnv8EALw_wcB&gclsrc=aw.ds">Android Studio</a> 
+- <a href="https://developer.android.com/studio?gclid=Cj0KCQjwteOaBhDuARIsADBqRejGiRHy0a3ZSJ92Rs2zOCbQZUr9CVS1UY6qBSoiPj3i9AZIqBBpN5MaAnv8EALw_wcB&gclsrc=aw.ds">Android Studio</a>
 
 
-## 🏛 Installation and Usage 
+## 🏛 Installation and Usage
 - Download Android Studio
 - Clone this repository
 - Open this repository as a project folder in Android Studio
 - Install Compose
+
+## Code organization
+- `app/src/main/java/com/github/michaelroust/montblanc_ski_tracking/presentation`:
+    - `theme`: Contains UI Theme configuration for the whole app.
+    - `utilities`: General utilities. Global constants and a Ticker implementation used to increment our app's timer.
+    - `UIElements.kt`: Definitions of general UI elements reused throughout the app.
+    - `MainActivity.kt`: Activity shown on app startup.
+    - `StatsActivity.kt`: Activity containing all our ski tracking functionalities.
+    - `SafetyAcvitiy.kt`: Only used for development and testing, unreachable in
+      production app. Useful for quickly trying something out.
 
 ## ✍️ Author and Advisors
 - Hugo Parent-Leduc (<a
@@ -51,6 +64,6 @@ TODO
 - Michaud Véronique (EPFL)
 - Weber Thomas Alois (EPFL
 
- 
-Copyright (c) 2022 EPFL    
-this program is licensed under the terms of the [MIT]. 
+
+Copyright (c) 2022 EPFL
+this program is licensed under the terms of the [MIT].
