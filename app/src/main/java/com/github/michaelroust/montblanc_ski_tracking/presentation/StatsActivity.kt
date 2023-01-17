@@ -26,7 +26,6 @@ import androidx.compose.material.icons.rounded.Replay
 import androidx.compose.material.icons.rounded.Landscape
 import androidx.compose.material.icons.rounded.Height
 
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -55,9 +54,12 @@ import java.lang.Double.max
 
 class StatsActivity : ComponentActivity() {
     companion object {
+        // Interval in milliseconds at which GPS location is polled
         const val GPS_LOCATION_INTERVAL_MILLIS = 1000L
     }
 
+    // Mutable State Holders.
+    // Changes to these values are directly propagated to the UI.
     private val isSkiing = mutableStateOf(false)
     private val activeTime = mutableStateOf(0.0)
     private val nRuns = mutableStateOf(0)
@@ -73,6 +75,7 @@ class StatsActivity : ComponentActivity() {
     private val totalAvgSkiingSpeed = mutableStateOf(0.0)
     private val totalTopSpeed = mutableStateOf(0.0)
 
+    // Other object fields.
     lateinit var activeTimeTicker: Ticker
     lateinit var locationClient: FusedLocationProviderClient
     lateinit var vibrator: Vibrator
@@ -157,6 +160,9 @@ class StatsActivity : ComponentActivity() {
             totalTopSpeed.value = max(totalTopSpeed.value, topSpeed.value)
         }
     }
+
+    //------------------------------------------------------------------------
+    // Vibrations
 
     private fun vibrate(double: Boolean) {
         if (!double)
@@ -304,6 +310,9 @@ class StatsActivity : ComponentActivity() {
     //----------------------------------------------------------------------------------------
     // UI
 
+    private fun Double.format(decimals: Int) = "%.${decimals}f".format(this)
+
+
     @OptIn(ExperimentalWearMaterialApi::class)
     @Composable
     fun CustomColumnWithSideButtons (
@@ -436,25 +445,11 @@ class StatsActivity : ComponentActivity() {
             ) {
 
                 if (selectedPage == 0)
-                    StatsStuff(false)
+                    MainStatsComposable(false)
                 else if (selectedPage == 1) {
-                    LapsStatsStuff()
-//                    if (true) {
-//                        LapsStatsStuff(nLaps = nRuns.value)
-//                    } else {
-//                        StatsStuff(activeTime.value, distTraveled = 100.0, avgSkiingSpeed = 10.0, topSpeed = 50.0, deltaElevDown = 100.0)
-//                    }
+                    LapsStatsComposable()
                 } else if (selectedPage == 2) {
-                    StatsStuff(true)
-//                    CustomColumnLite {
-//                        val startStopText = if (false) "Resume" else "Pause"
-//                        CustomCompactChipLite(text = "$startStopText skiing") {
-//
-//                        }
-//                        CustomCompactChip("Stop skiing") {
-//
-//                        }
-//                    }
+                    MainStatsComposable(true)
                 }
             }
             HorizontalPageIndicator(
@@ -464,11 +459,9 @@ class StatsActivity : ComponentActivity() {
         }
     }
 
-//    private fun Double.format(decimals: Int) = "%.${decimals}f".format(this)
-
 
     @Composable
-    fun LapsStatsStuff() {
+    fun LapsStatsComposable() {
         CustomColumn {
 
             Text(
@@ -507,7 +500,7 @@ class StatsActivity : ComponentActivity() {
     }
 
     @Composable
-    fun StatsStuff(showTotals: Boolean) {
+    fun MainStatsComposable(showTotals: Boolean) {
 
         val activeTimeText = formatTime((if (!showTotals) activeTime else totalActiveTime).value.toInt())
         val distTraveledText = "${(if (!showTotals) distTraveled else totalDistTraveled).value.format(1)} km"
@@ -539,9 +532,6 @@ class StatsActivity : ComponentActivity() {
             Spacer(Modifier.width(4.dp))
             CustomStatsTopBottomText(distTraveledText)
         }
-
-        //CustomStatsTopBottomText(distTraveledText)
-
 
         Row(
             modifier = Modifier
@@ -602,251 +592,6 @@ class StatsActivity : ComponentActivity() {
         //CustomStatsTopBottomText(elevText)
     }
 
-    //----------------------------------------------------------------------------------------
-    // Old UI
-
-    private fun Double.format(decimals: Int) = "%.${decimals}f".format(this)
-
-
-    /*@Composable
-    fun StatsAppGeneric(content: @Composable (ColumnScope.() -> Unit)) {
-        val maxPages = 3
-        var selectedPage by remember { mutableStateOf(0) }
-        var finalValue by remember { mutableStateOf(0) }
-
-        val animatedSelectedPage by animateFloatAsState(
-            targetValue = selectedPage.toFloat(),
-        ) {
-            finalValue = it.toInt()
-        }
-
-        val pageIndicatorState: PageIndicatorState = remember {
-            object : PageIndicatorState {
-                override val pageOffset: Float
-                    get() = animatedSelectedPage - finalValue
-                override val selectedPage: Int
-                    get() = finalValue
-                override val pageCount: Int
-                    get() = maxPages
-            }
-        }
-
-        fun swipeLeft() {
-            if (selectedPage > 0)
-                selectedPage--
-        }
-
-        fun swipeRight() {
-            if (selectedPage < (maxPages - 1))
-                selectedPage++
-        }
-
-        MontblancSkiTrackingTheme {
-            CustomColumnWithSideButtons(
-                leftButtonOnClick = { swipeLeft() },
-                rightButtonOnClick = { swipeRight() },
-                pageIndicatorState = pageIndicatorState,
-                columnContent = content
-            )
-            HorizontalPageIndicator(
-                modifier = Modifier.padding(4.dp),
-                pageIndicatorState = pageIndicatorState
-            )
-        }
-    }
-
-    @OptIn(ExperimentalWearMaterialApi::class)
-    @Composable
-    fun CustomColumnWithSideButtons (
-        leftButtonOnClick: () -> Unit,
-        rightButtonOnClick: () -> Unit,
-        pageIndicatorState: PageIndicatorState,
-        columnContent: @Composable (ColumnScope.() -> Unit)
-    ) {
-        val sideButtonsWidth = 16.dp
-
-        BoxWithConstraints(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colors.background)
-        ) {
-            Button(
-                modifier = Modifier
-                    // .alpha(0f)
-                    .fillMaxHeight()
-                    .width(sideButtonsWidth)
-                    .align(Alignment.CenterStart),
-                onClick = leftButtonOnClick) {}
-
-            Button(
-                modifier = Modifier
-                    // .alpha(0f)
-                    .fillMaxHeight()
-                    .width(sideButtonsWidth)
-                    .align(Alignment.CenterEnd),
-                onClick = rightButtonOnClick) {}
-
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(this.maxWidth - sideButtonsWidth * 2)
-                    .align(Alignment.Center),
-                verticalArrangement = Arrangement.SpaceEvenly,
-                content = columnContent
-            )
-
-            TimeText()
-        }
-    }
-
-
-    @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
-    @Composable
-    fun OneLapStats2() {
-//        CustomText(text = "Hello")
-        StatsAppGeneric {
-            CustomText(text = "Hello")
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-//                CustomColumnLite {
-//
-//                }
-            }
-
-        }
-    }
-
-
-    @OptIn(ExperimentalWearMaterialApi::class)
-    @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
-    @Composable
-    fun OneLapStats() {
-        MontblancSkiTrackingTheme {
-            CustomColumn {
-
-                CustomStatsTopBottomText(text = "${distTraveled.value.format(1)} m")
-                CustomStatsMiddleText(text = "${avgSkiingSpeed.value.format(1)}")
-                CustomInfoText(text = "AVG km/h")
-                CustomStatsMiddleText(text = "${topSpeed.value.format(1)}")
-                CustomInfoText(text = "TOP km/h")
-                CustomStatsTopBottomText(text = "${deltaElevDown.value.format(1)} m")
-            }
-        }
-        TimeText()
-    }
-
-    @OptIn(ExperimentalWearMaterialApi::class)
-    @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
-    @Composable
-    fun TransitionAllLapsStats() {
-        MontblancSkiTrackingTheme {
-
-            CustomColumn {
-                CustomInfoText(text = "Statistics over all")
-                Row{
-                    Icon(Icons.Rounded.Search, contentDescription = "Localized description")
-                    CustomLapsText(text = "${nRuns.value} laps")
-                }
-            }
-        }
-        TimeText()
-    }
-
-
-
-    @OptIn(ExperimentalWearMaterialApi::class)
-    @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
-    @Composable
-    fun AllLapsStats() {
-        MontblancSkiTrackingTheme {
-            CustomColumn {
-                val hours = activeTime.value.toInt() / 3600
-                val minutes = (activeTime.value.toInt() % 3600) / 60
-                val seconds = (activeTime.value.toInt()) % 60
-
-                CustomStatsText(text = String.format("%02dº:%02d'':%02d'", hours, minutes, seconds))
-
-                Row(horizontalArrangement = Arrangement.SpaceEvenly) {
-                    Icon(Icons.Rounded.Search, contentDescription = "Localized description")
-                    CustomStatsTopBottomText(text = "${distTraveled.value.format(1)} m")
-                }
-
-                Row(horizontalArrangement = Arrangement.SpaceEvenly)  {
-                    CustomStatsMiddleText(text = "${topSpeed.value.format(1)}")
-                    CustomStatsMiddleText(text = "${avgSkiingSpeed.value.format(1)}")
-                }
-                Row(horizontalArrangement = Arrangement.SpaceEvenly)  {
-                    CustomMiddleStatsText(text = "TOP km/h")
-                    CustomMiddleStatsText(text = "AVG km/h")
-                }
-
-                Row(horizontalArrangement = Arrangement.SpaceEvenly) {
-                    Icon(Icons.Rounded.Search, contentDescription = "Localized description")
-                    CustomStatsTopBottomText(text = "${deltaElevDown.value.format(1)} m")
-                }
-            }
-        }
-        val hours = activeTime.value.toInt() / 3600
-        val minutes = (activeTime.value.toInt() % 3600) / 60
-        val seconds = (activeTime.value.toInt()) % 60
-
-
-
-        val leadingTextStyle = TimeTextDefaults.timeTextStyle(color = MaterialTheme.colors.primary)
-
-        TimeText()
-    }
-
-
-    @OptIn(ExperimentalWearMaterialApi::class)
-    @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
-    @Composable
-    fun FinishRun() {
-        MontblancSkiTrackingTheme {
-            Image(
-                painter = painterResource(id = R.drawable.mountain_round),
-                contentDescription = stringResource(id = R.string.dog_content_description)
-            )
-            CustomColumnLite {
-                val startStopText = if (!isSkiing.value) "Resume" else "Pause"
-                CustomCompactChipLite(text = "$startStopText skiing") {
-                    toggleSkiing()
-                }
-                CustomCompactChip("Stop skiing") {
-                    toggleSkiing()
-                }
-            }
-        }
-        TimeText()
-    }*/
-
-// BACKUP FROM THE ABOVE FUNCTION
-//    private fun Double.format(decimals: Int) = "%.${decimals}f".format(this)
-//    @Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
-//    @Composable
-//    fun StatsApp() {
-//        MontblancSkiTrackingTheme {
-//            CustomColumn {
-//                val hours = activeTime.value.toInt() / 3600
-//                val minutes = (activeTime.value.toInt() % 3600) / 60
-//                val seconds = (activeTime.value.toInt()) % 60
-//
-//                CustomStatsText(text = "Active time: ${String.format("%02d:%02d:%02d", hours, minutes, seconds)}")
-//                CustomStatsText(text = "Nº runs: ${nRuns.value}")
-//                CustomStatsText(text = "Distance: ${distTraveled.value.format(1)} m")
-//                CustomStatsText(text = "Elevation: ${deltaElevDown.value.format(1)} m")
-//                CustomStatsText(text = "Average speed: ${avgSkiingSpeed.value.format(1)} km/h")
-//                CustomStatsText(text = "Top speed: ${topSpeed.value.format(1)} km/h")
-//
-//                val startStopText = if (!isSkiing.value) "Start" else "Stop"
-//                CustomCompactChip(text = "$startStopText skiing") {
-//                    toggleSkiing()
-//                }
-//            }
-//        }
-//    }
 
     //----------------------------------------------------------------------------------------
     // GPS/Location Functions
@@ -912,6 +657,9 @@ class StatsActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * Requests a new location update. Calls `locationHandler` with received Location.
+     */
     private fun getCurrentLocation(locationHandler: (Location) -> Unit) {
 
         if (ActivityCompat.checkSelfPermission(
@@ -947,6 +695,10 @@ class StatsActivity : ComponentActivity() {
             }
     }
 
+    /**
+     * Initiate location updates. Calling given locationListener every time a new update is
+     * received. Update is requested every `intervalMillis` milliseconds.
+     */
     private fun startLocationUpdates(intervalMillis: Long, locationListener: LocationListener) {
 
         if (ActivityCompat.checkSelfPermission(
@@ -974,28 +726,3 @@ class StatsActivity : ComponentActivity() {
     //----------------------------------------------------------------------------------------
 
 }
-
-//@Composable
-//fun StatsApp() {
-//    MontblancSkiTrackingTheme {
-//        CustomColumn {
-//            CustomText(text = "StatsActivity")
-//
-//            CustomStatsText(text = "Active time: 00:00:00")
-//            CustomStatsText(text = "Nº runs: ${0}")
-//            CustomStatsText(text = "Elevation change: +0 m   -0 m")
-//            CustomStatsText(text = "Distance traveled: 0 m")
-//            CustomStatsText(text = "Current speed: 0 km/h")
-//            CustomStatsText(text = "Average speed: 0 km/h")
-//            CustomStatsText(text = "Top speed: 0 km/h")
-//
-//            CustomCompactChip(text = "Button") {}
-//        }
-//    }
-//}
-//
-//@Preview(device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
-//@Composable
-//fun DefaultStatsPreview() {
-//    StatsApp()
-//}

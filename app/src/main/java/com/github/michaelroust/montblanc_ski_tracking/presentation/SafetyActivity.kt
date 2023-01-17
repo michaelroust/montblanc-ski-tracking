@@ -156,12 +156,12 @@ fun StatsApp() {
         ) {
 
             if (selectedPage == 0)
-                StatsStuff(0.0, distTraveled = 0.0, avgSkiingSpeed = 10.0, topSpeed = 20.0, deltaElevDown = 30.0)
+                MainStatsComposable(0.0, distTraveled = 0.0, avgSkiingSpeed = 10.0, topSpeed = 20.0, deltaElevDown = 30.0)
             else if (selectedPage == 1) {
                 if (true) { // TODO replace with whatever is needed
-                    LapsStatsStuff(nLaps = 0)
+                    LapsStatsComposable(nLaps = 0)
                 } else {
-                    StatsStuff(0.0, distTraveled = 100.0, avgSkiingSpeed = 10.0, topSpeed = 50.0, deltaElevDown = 100.0)
+                    MainStatsComposable(0.0, distTraveled = 100.0, avgSkiingSpeed = 10.0, topSpeed = 50.0, deltaElevDown = 100.0)
                 }
             } else if (selectedPage == 2) {
                 CustomColumnLite {
@@ -186,7 +186,7 @@ private fun Double.format(decimals: Int) = "%.${decimals}f".format(this)
 
 
 @Composable
-fun LapsStatsStuff(nLaps:Int) {
+fun LapsStatsComposable(nLaps:Int) {
     CustomColumn {
 
         Text(
@@ -217,7 +217,7 @@ fun LapsStatsStuff(nLaps:Int) {
 
 
 @Composable
-fun StatsStuff(activeTime:Double, distTraveled:Double, avgSkiingSpeed:Double, topSpeed:Double, deltaElevDown:Double) {
+fun MainStatsComposable(activeTime:Double, distTraveled:Double, avgSkiingSpeed:Double, topSpeed:Double, deltaElevDown:Double) {
 
     val distanceTraveledText = "${distTraveled.format(1)} m"
     val avgSpeedText = avgSkiingSpeed.format(1)
