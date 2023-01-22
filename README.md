@@ -54,7 +54,7 @@
                 href="mailto:olivier.staehli@epfl.ch">olivier.staehli@epfl.ch</a>)
 - Felix Obschonka (Montblanc)
 - Michaud Véronique (EPFL)
-- Weber Thomas Alois (EPFL
+- Weber Thomas Alois (EPFL)
 
 
 Copyright (c) 2022 EPFL
