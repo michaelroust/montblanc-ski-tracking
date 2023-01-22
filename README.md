@@ -8,18 +8,10 @@
 ## 📝 Table of Contents
 - [⌚️ Montblanc - Ski Tracking Feature - 2022](#️-montblanc---ski-tracking-feature---2022)
   - [📝 Table of Contents](#-table-of-contents)
-  - [🧐 About](#-about)
-  - [🏁 Summary](#-summary)
   - [💻 Links](#-links)
   - [🏛 Installation and Usage](#-installation-and-usage)
   - [Code organization](#code-organization)
   - [✍️ Author and Advisors](#️-author-and-advisors)
-
-## 🧐 About
-TODO
-
-## 🏁 Summary
-TODO
 
 ## 💻 Links
 - <a href="https://developer.android.com/studio?gclid=Cj0KCQjwteOaBhDuARIsADBqRejGiRHy0a3ZSJ92Rs2zOCbQZUr9CVS1UY6qBSoiPj3i9AZIqBBpN5MaAnv8EALw_wcB&gclsrc=aw.ds">Android Studio</a>
