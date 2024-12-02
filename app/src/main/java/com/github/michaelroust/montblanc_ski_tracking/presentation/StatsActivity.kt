@@ -58,22 +58,24 @@ class StatsActivity : ComponentActivity() {
         const val GPS_LOCATION_INTERVAL_MILLIS = 1000L
     }
 
-    // Mutable State Holders.
-    // Changes to these values are directly propagated to the UI.
-    private val isSkiing = mutableStateOf(false)
-    private val activeTime = mutableStateOf(0.0)
-    private val nRuns = mutableStateOf(0)
-    private val distTraveled = mutableStateOf(0.0)
-    private val deltaElevDown = mutableStateOf(0.0)
-    private val curSpeed = mutableStateOf(0.0)
-    private val avgSkiingSpeed = mutableStateOf(0.0)
-    private val topSpeed = mutableStateOf(0.0)
+//    TODO Change values to cool values
+//    TODO Take screenshots and add to https://github.com/michaelroust/montblanc-ski-tracking
+//    TODO Unstage changes
 
-    private val totalActiveTime = mutableStateOf(0.0)
-    private val totalDistTraveled = mutableStateOf(0.0)
-    private val totalDeltaElevDown = mutableStateOf(0.0)
-    private val totalAvgSkiingSpeed = mutableStateOf(0.0)
-    private val totalTopSpeed = mutableStateOf(0.0)
+    private val isSkiing = mutableStateOf(false)
+    private val activeTime = mutableStateOf(((1.2)/(21.9))*3600)
+    private val nRuns = mutableStateOf(11.0)
+    private val distTraveled = mutableStateOf(1.2)
+    private val deltaElevDown = mutableStateOf(347.5)
+    private val curSpeed = mutableStateOf(62.1)
+    private val avgSkiingSpeed = mutableStateOf(21.9)
+    private val topSpeed = mutableStateOf(71.2)
+
+    private val totalActiveTime = mutableStateOf(((17.2)/(18.2))*3600)
+    private val totalDistTraveled = mutableStateOf(17.2)
+    private val totalDeltaElevDown = mutableStateOf(5876.9)
+    private val totalAvgSkiingSpeed = mutableStateOf(18.2)
+    private val totalTopSpeed = mutableStateOf(71.2)
 
     // Other object fields.
     lateinit var activeTimeTicker: Ticker

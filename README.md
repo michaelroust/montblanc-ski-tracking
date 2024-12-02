@@ -3,27 +3,13 @@
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
 
-<div style="display: flex; justify-content: space-around;">
-    <figure style="margin: 10px; text-align: center;">
-        <img src="media/1.png" alt="Image 1" width="200">
-        <figcaption>Welcome screen</figcaption>
-    </figure>
-    <figure style="margin: 10px; text-align: center;">
-        <img src="media/2.png" alt="Image 2" width="200">
-        <figcaption>Current Run Stats</figcaption>
-    </figure>
-</div>
-<br/>
-<div style="display: flex; justify-content: space-around;">
-    <figure style="margin: 10px; text-align: center;">
-        <img src="media/3.png" alt="Image 1" width="200">
-        <figcaption>Total Runs</figcaption>
-    </figure>
-    <figure style="margin: 10px; text-align: center;">
-        <img src="media/4.png" alt="Image 2" width="200">
-        <figcaption>Total Stats</figcaption>
-    </figure>
-</div>
+| ![Image 1](media/1.png) | ![Image 2](media/2.png) |
+|:-----------------------:|:-----------------------:|
+| Welcome Screen     | Current Run Stats     |
+
+| ![Image 1](media/3.png) | ![Image 2](media/4.png) |
+|:-----------------------:|:-----------------------:|
+| Total Runs     | Total Stats     |
 
 ---
 
