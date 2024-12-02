@@ -71,10 +71,10 @@ class StatsActivity : ComponentActivity() {
     private val avgSkiingSpeed = mutableStateOf(21.9)
     private val topSpeed = mutableStateOf(71.2)
 
-    private val totalActiveTime = mutableStateOf(((17.2)/(18.2))*3600)
-    private val totalDistTraveled = mutableStateOf(17.2)
+    private val totalActiveTime = mutableStateOf(((19.2)/(12.2))*3600)
+    private val totalDistTraveled = mutableStateOf(19.2)
     private val totalDeltaElevDown = mutableStateOf(5876.9)
-    private val totalAvgSkiingSpeed = mutableStateOf(18.2)
+    private val totalAvgSkiingSpeed = mutableStateOf(12.2)
     private val totalTopSpeed = mutableStateOf(71.2)
 
     // Other object fields.
